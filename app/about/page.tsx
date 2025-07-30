@@ -19,13 +19,8 @@ const teamMembers = [
 
 const technologies = [
   "Arch Linux Base",
-  "Custom Kernel",
   "Prism Package Manager",
-  "KDE Plasma Desktop",
-  "Wayland Support",
-  "BTRFS Filesystem",
   "Grub",
-  "PipeWire Audio",
 ]
 
 export default function AboutPage() {
@@ -171,9 +166,9 @@ export default function AboutPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {technologies.map((tech, index) => (
-                <Badge key={index} variant="outline" className="justify-center p-2">
+                <Badge key={index} variant="outline" className="justify-center px-8 py-3 text-base">
                   {tech}
                 </Badge>
               ))}

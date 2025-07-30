@@ -23,7 +23,7 @@ const downloadOptions = [
 
 const systemRequirements = [
   { component: "Processor", requirement: "64-bit x86_64 CPU (2 GHz or faster)" },
-  { component: "Memory", requirement: "4 GB RAM minimum (8 GB recommended)" },
+  { component: "Memory", requirement: "4 GB RAM minimum (6 GB recommended)" },
   { component: "Storage", requirement: "20 GB available disk space" },
   { component: "Graphics", requirement: "OpenGL 4.0+ compatible" },
   { component: "Network", requirement: "Internet connection for updates" },
