@@ -102,10 +102,6 @@
             # Check if it's a Next.js project and provide helpful info
             if [ -f "next.config.js" ] || [ -f "next.config.mjs" ]; then
               echo "✅ Next.js project detected!"
-              if [ -d ".next" ]; then
-              else
-                echo "💡 Run 'bun run dev' once to generate initial types and build artifacts."
-              fi
             fi
           '';
 
