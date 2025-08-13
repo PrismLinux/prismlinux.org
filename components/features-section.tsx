@@ -1,50 +1,39 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Zap, Shield, Gamepad2, Code, Palette, Package } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Zap, Shield, Gamepad2, Code, Palette, Package } from "lucide-react";
 
 const features = [
   {
     icon: Zap,
     title: "Lightning-Fast Performance",
     description:
-      "Built on Arch Linux foundation with optimized kernel and system configurations for maximum speed and responsiveness.",
-    color: "text-primary",
+      "Optimized kernel and system configurations for maximum speed.",
   },
   {
     icon: Shield,
     title: "Enhanced Security",
-    description:
-      "Advanced security features including hardened(or zen) kernel, and firewall configuration.",
-    color: "text-accent",
+    description: "Hardened kernel and advanced security features.",
   },
   {
     icon: Gamepad2,
-    title: "Gaming Optimizations",
-    description:
-      "Pre-configured with Steam, Lutris, and gaming-specific kernel optimizations for the ultimate gaming experience.",
-    color: "text-secondary",
+    title: "Gaming Ready",
+    description: "Pre-configured with Steam, Lutris, and gaming optimizations.",
   },
   {
     icon: Code,
-    title: "Developer-Friendly Tools",
-    description:
-      "Complete development environment with popular IDEs, compilers, and development tools pre-configured out of the box.",
-    color: "text-primary",
+    title: "Developer Friendly",
+    description: "A complete development environment out of the box.",
   },
   {
     icon: Palette,
-    title: "Content Creation Suite",
-    description:
-      "Pre-configured settings for professional creative software including video editing, 3D modeling, and graphic design tools.",
-    color: "text-accent",
+    title: "For Creatives",
+    description: "Tools for video editing, 3D modeling, and graphic design.",
   },
   {
     icon: Package,
     title: "Prism Package Manager",
-    description:
-      "Our custom package manager provides easy software installation and system maintenance with advanced dependency resolution.",
-    color: "text-secondary",
+    description: "Easy software installation and system maintenance.",
   },
-]
+];
 
 export function FeaturesSection() {
   return (
@@ -52,27 +41,27 @@ export function FeaturesSection() {
       <div className="container">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl md:text-5xl font-bold">
-            Why Choose <span className="text-primary">PrismLinux</span>?
+            Why <span className="text-primary">PrismLinux</span>?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Discover the features that make PrismLinux the perfect choice for power users, gamers, and creators.
+            The features that make PrismLinux the perfect choice for power
+            users.
           </p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="group hover:glow-effect transition-all duration-300 bg-card/50 backdrop-blur">
-              <CardHeader>
-                <feature.icon className={`h-12 w-12 ${feature.color} group-hover:scale-110 transition-transform`} />
-                <CardTitle className="text-xl">{feature.title}</CardTitle>
+            <Card key={index} className="card-glow">
+              <CardHeader className="flex flex-row items-center gap-4">
+                <feature.icon className="h-8 w-8 text-primary" />
+                <CardTitle>{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base">{feature.description}</CardDescription>
+                <p className="text-muted-foreground">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }
