@@ -16,7 +16,7 @@ const features = [
   {
     icon: Gamepad2,
     title: "Gaming Ready",
-    description: "Pre-configured with Steam, Lutris, and gaming optimizations.",
+    description: "Pre-configured with Steam and gaming optimizations.",
   },
   {
     icon: Code,

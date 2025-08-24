@@ -39,7 +39,6 @@ export const metadata: Metadata = {
     description:
       "Experience the future of Linux with PrismLinux - optimized for gamers, developers, and creators.",
   },
-  generator: "v0.dev",
 };
 
 export default function RootLayout({
@@ -59,8 +58,9 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="relative flex min-h-screen flex-col">
-            <SiteHeader />
-            <div className="flex-1">{children}</div>
+            <SiteHeader>
+              <div className="flex-1">{children}</div>
+            </SiteHeader>
           </div>
         </ThemeProvider>
       </body>
