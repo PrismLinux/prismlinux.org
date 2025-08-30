@@ -300,7 +300,6 @@ export default function AboutPage() {
           Technology <span className="text-primary">Stack</span>
         </h2>
 
-        {/* Option 1: Modern Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {technologies.map((tech, index) => (
             <Card
