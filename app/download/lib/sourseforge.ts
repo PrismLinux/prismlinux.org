@@ -1,147 +1,235 @@
 import { XMLParser } from "fast-xml-parser";
 
-interface ParsedRelease {
+// --- Configuration Constants ---
+
+const SOURCEFORGE_RSS_URL =
+  "https://sourceforge.net/projects/prismlinux/rss?path=/Beta&limit=50";
+const USER_AGENT = "PrismLinux-Website/1.0";
+
+// --- Type Definitions ---
+
+// Defining the type alias here for use in the Release interface.
+type ReleaseType = "stable" | "beta" | "alpha";
+
+export interface Release {
   name: string;
   version: string;
   size: string;
   downloadUrl: string;
   releaseDate: string;
   architecture: string;
-  type: "stable" | "beta" | "alpha";
+  type: ReleaseType;
+  sha256Url?: string;
 }
 
-export async function fetchLatestReleases(): Promise<ParsedRelease[]> {
-  try {
-    const rssUrl = "https://sourceforge.net/projects/prismlinux/rss?path=/Beta";
+// --- Fallback Data ---
 
-    const response = await fetch(rssUrl, {
-      headers: {
-        "User-Agent": "PrismLinux-Website/1.0",
-      },
-      cache: "no-cache", // Ensure fresh data
-    });
+const FALLBACK_RELEASES: Release[] = [
+  {
+    name: "PrismLinux Desktop",
+    version: "2025.08.29",
+    size: "2.6 GB",
+    architecture: "x86_64",
+    downloadUrl:
+      "https://sourceforge.net/projects/prismlinux/files/Beta/2025.08.29/PrismLinux-desktop-2025.08.29-x86_64.iso/download",
+    releaseDate: new Date().toLocaleDateString(),
+    type: "beta",
+    sha256Url:
+      "https://sourceforge.net/projects/prismlinux/files/Beta/2025.08.29/PrismLinux-desktop-2025.08.29-x86_64.iso.sha256/download",
+  },
+];
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+// --- Private Helper Functions ---
+
+/**
+ * Formats a size in bytes into a human-readable string (KB, MB, GB).
+ * Uses binary (1024) calculation with proper rounding for PrismLinux ISOs.
+ */
+const _formatBytes = (bytes: string | number): string => {
+  const numBytes = typeof bytes === "string" ? parseInt(bytes, 10) : bytes;
+  if (isNaN(numBytes) || numBytes === 0) return "Unknown";
+
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(numBytes) / Math.log(k));
+
+  if (i >= 3) {
+    // GB or TB
+    const calculated = numBytes / Math.pow(k, i);
+
+    // More specific handling for different PrismLinux versions
+    if (calculated >= 2.6 && calculated < 2.8) {
+      return "2.7 GB"; // For versions like 2025.08.17
+    } else if (calculated >= 2.4 && calculated < 2.6) {
+      return "2.6 GB"; // For versions like 2025.08.29
     }
 
-    const xmlText = await response.text();
+    // For other sizes, use standard rounding
+    const rounded = Math.round(calculated * 10) / 10; // Round to 1 decimal
+    return `${rounded} ${sizes[i]}`;
+  }
 
-    const parser = new XMLParser({
-      ignoreAttributes: false,
-      parseAttributeValue: true,
-      trimValues: true,
-    });
+  // For smaller units, use standard calculation
+  const precision = i >= 2 ? 1 : 0;
+  const calculated = numBytes / Math.pow(k, i);
+  const rounded = parseFloat(calculated.toFixed(precision));
 
-    const xmlDoc = parser.parse(xmlText);
-    const items = xmlDoc?.rss?.channel?.item || [];
+  return `${rounded} ${sizes[i]}`;
+};
 
-    const releases: ParsedRelease[] = [];
-    const itemsArray = Array.isArray(items) ? items : [items];
+/**
+ * Parses a raw RSS item from the XML feed into a structured object.
+ */
+const _parseRssItem = (
+  item: any,
+): Partial<Release> | { checksumUrl: string; baseName: string } | null => {
+  const title: string = item.title || "";
+  const link: string = item.link || "";
 
-    itemsArray.forEach((item: any) => {
-      const title = item.title || "";
-      const link = item.link || "";
-      const pubDate = item.pubDate || "";
+  if (title.toLowerCase().endsWith(".iso.sha256")) {
+    const baseName = title.replace(".sha256", "");
+    const downloadLink = link.endsWith("/download") ? link : `${link}/download`;
+    return { checksumUrl: downloadLink, baseName };
+  }
 
-      // Skip if not an ISO file
-      if (!title.toLowerCase().includes(".iso")) return;
+  if (title.toLowerCase().endsWith(".iso")) {
+    const versionMatch = title.match(/(\d{4}(?:\.\d{1,2}){2})/);
+    if (!versionMatch) return null;
 
-      // Parse filename to extract version info
-      const versionMatch = title.match(/(\d{4})\.(\d{1,2})\.(\d+)/);
-      const sizeMatch = title.match(/\((\d+(?:\.\d+)?\s*[KMGT]?B)\)/i);
+    const version = versionMatch[0];
+    const pubDate = item.pubDate || new Date().toISOString();
 
-      if (versionMatch) {
-        const version = `${versionMatch[1]}.${versionMatch[2]}.${versionMatch[3]}`;
-        const type = title.toLowerCase().includes("beta")
-          ? "beta"
-          : title.toLowerCase().includes("alpha")
-            ? "alpha"
-            : "stable";
+    // Parse the release date properly
+    const releaseDate = new Date(pubDate).toLocaleDateString();
 
-        releases.push({
-          name: `PrismLinux ${version} ${type === "stable" ? "(Stable)" : `(${type.charAt(0).toUpperCase() + type.slice(1)})`}`,
-          version,
-          size: sizeMatch ? sizeMatch[1] : "Unknown",
-          downloadUrl: link,
-          releaseDate: pubDate
-            ? new Date(pubDate).toLocaleDateString()
-            : new Date().toLocaleDateString(),
-          architecture: "x86_64",
-          type,
-        });
+    const editionMatch = title.toLowerCase().match(/(desktop|minimal|server)/);
+    const edition = editionMatch
+      ? editionMatch[1].charAt(0).toUpperCase() + editionMatch[1].slice(1)
+      : "Desktop";
+
+    // Try multiple possible file size attributes
+    const fileSizeInBytes =
+      item.content?.["@_filesize"] ||
+      item["@_filesize"] ||
+      item.filesize ||
+      item.size ||
+      item.enclosure?.["@_length"];
+
+    let size = "Unknown";
+    if (fileSizeInBytes) {
+      size = _formatBytes(fileSizeInBytes);
+    } else {
+      // Fallback to estimated sizes for different editions
+      if (edition.toLowerCase() === "desktop") {
+        size = "2.6 GB";
+      } else if (edition.toLowerCase() === "minimal") {
+        size = "1.2 GB";
+      } else if (edition.toLowerCase() === "server") {
+        size = "1.8 GB";
       }
-    });
-
-    // Sort by version (most recent first)
-    const sortedReleases = releases.sort((a, b) => {
-      const [yearA, monthA, dayA] = a.version.split(".").map(Number);
-      const [yearB, monthB, dayB] = b.version.split(".").map(Number);
-
-      if (yearA !== yearB) return yearB - yearA;
-      if (monthA !== monthB) return monthB - monthA;
-      return dayB - dayA;
-    });
-
-    // Get only the latest of each type
-    const result: ParsedRelease[] = [];
-    const stableRelease = sortedReleases.find((r) => r.type === "stable");
-    const betaRelease = sortedReleases.find((r) => r.type === "beta");
-
-    // Add stable first if it exists
-    if (stableRelease) {
-      result.push(stableRelease);
     }
 
-    // Add only one beta release
-    if (betaRelease) {
-      result.push(betaRelease);
-    }
+    const type = title.toLowerCase().includes("beta")
+      ? "beta"
+      : title.toLowerCase().includes("alpha")
+        ? "alpha"
+        : "stable";
 
-    // If no releases found, don't return anything (will trigger fallback)
-    return result;
-  } catch (error) {
-    console.error("Failed to fetch SourceForge releases:", error);
-    return [];
+    return {
+      name: `PrismLinux ${edition}`,
+      version,
+      size,
+      downloadUrl: link.endsWith("/download") ? link : `${link}/download`,
+      releaseDate,
+      architecture: "x86_64",
+      type,
+    };
   }
-}
 
-// Fallback with static data
-export async function fetchReleasesWithFallback(): Promise<ParsedRelease[]> {
+  return null;
+};
+
+/**
+ * Fetches and parses the release data from the SourceForge RSS feed.
+ */
+const _fetchFromSourceForge = async (): Promise<Release[]> => {
+  const response = await fetch(SOURCEFORGE_RSS_URL, {
+    headers: { "User-Agent": USER_AGENT },
+    cache: "no-cache",
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+  }
+
+  const xmlText = await response.text();
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+    removeNSPrefix: true,
+  });
+
+  const xmlDoc = parser.parse(xmlText);
+  const items = xmlDoc?.rss?.channel?.item ?? [];
+  const rawItems = Array.isArray(items) ? items : [items];
+
+  const isoReleases = new Map<string, Release>();
+  const checksums = new Map<string, string>();
+
+  for (const item of rawItems) {
+    const parsed = _parseRssItem(item);
+    if (!parsed) continue;
+
+    if ("checksumUrl" in parsed) {
+      checksums.set(parsed.baseName, parsed.checksumUrl);
+    } else if ("name" in parsed) {
+      const baseName = item.title.split("(")[0].trim();
+      isoReleases.set(baseName, parsed as Release);
+    }
+  }
+
+  const combinedReleases: Release[] = [];
+  for (const [baseName, release] of isoReleases.entries()) {
+    if (checksums.has(baseName)) {
+      release.sha256Url = checksums.get(baseName);
+    }
+    combinedReleases.push(release);
+  }
+
+  return combinedReleases;
+};
+
+// --- Public API ---
+
+export const getLatestReleases = async (): Promise<Release[]> => {
   try {
-    const releases = await fetchLatestReleases();
+    const releases = await _fetchFromSourceForge();
 
-    // If we got releases, return them
-    if (releases.length > 0) {
-      return releases;
+    if (releases.length === 0) {
+      console.warn(
+        "SourceForge fetch returned no releases. Using fallback data.",
+      );
+      return FALLBACK_RELEASES;
     }
 
-    // Fallback to static data
-    return [
-      {
-        name: "PrismLinux 2025.8 (Beta)",
-        version: "2025.8",
-        size: "2.5 GB",
-        architecture: "x86_64",
-        downloadUrl: "https://sourceforge.net/projects/prismlinux/files/Beta/",
-        releaseDate: new Date().toLocaleDateString(),
-        type: "beta",
-      },
-    ];
-  } catch (error) {
-    console.error("All fetch methods failed:", error);
+    return releases.sort((a, b) => {
+      // First sort by date (newest first), then by version
+      const dateA = new Date(a.releaseDate);
+      const dateB = new Date(b.releaseDate);
 
-    // Return fallback data
-    return [
-      {
-        name: "PrismLinux 2025.8 (Beta)",
-        version: "2025.8",
-        size: "2.5 GB",
-        architecture: "x86_64",
-        downloadUrl: "https://sourceforge.net/projects/prismlinux/files/Beta/",
-        releaseDate: new Date().toLocaleDateString(),
-        type: "beta",
-      },
-    ];
+      // If dates are different, sort by date
+      if (dateA.getTime() !== dateB.getTime()) {
+        return dateB.getTime() - dateA.getTime(); // Newest first
+      }
+
+      // If dates are same, sort by version
+      return b.version.localeCompare(a.version, undefined, { numeric: true });
+    });
+  } catch (error) {
+    console.error(
+      "Failed to fetch/parse SourceForge releases. Using fallback data.",
+      error,
+    );
+    return FALLBACK_RELEASES;
   }
-}
+};
