@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "PrismLinux",
   url: "https://prismlinux.org",
-  ogImage: "https://prismlinux.org/og.jpg",
+  ogImage: "https://prismlinux.org/logo.jpg",
   description:
     "PrismLinux is a cutting-edge Arch Linux-based distribution optimized for speed, security, gaming, programming, and content creation.",
   mainNav: [
@@ -22,11 +22,6 @@ export const siteConfig = {
       href: "/wiki",
     },
   ],
-  links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/ui",
-    docs: "https://ui.shadcn.com",
-  },
-}
+};
 
-export type SiteConfig = typeof siteConfig
+export type SiteConfig = typeof siteConfig;

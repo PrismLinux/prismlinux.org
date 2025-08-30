@@ -20,15 +20,6 @@ export function HeroSection() {
           <Link href="/download" className={cn(buttonVariants({ size: "lg" }))}>
             Download Now
           </Link>
-          <Link
-            href={siteConfig.links.github}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-          >
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            GitHub
-          </Link>
         </div>
       </div>
     </section>

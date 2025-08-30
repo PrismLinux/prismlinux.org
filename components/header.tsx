@@ -9,11 +9,10 @@ import { Menu, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
-// Navigation items, removing Home as the logo serves as the home link.
 const navItems = [
   { name: "Download", href: "/download" },
-  { name: "About", href: "/about" },
   { name: "Wiki", href: "/wiki" },
+  { name: "About", href: "/about" },
 ];
 
 interface HeaderProps {
@@ -25,7 +24,7 @@ export function Header({ children }: HeaderProps) {
   const { setTheme, theme } = useTheme();
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
           <div className="flex items-center gap-6">
@@ -106,8 +105,10 @@ export function Header({ children }: HeaderProps) {
           </div>
         </div>
       </header>
-      {children}
-    </>
+
+      {/* Main content area that grows to fill remaining space */}
+      <main className="flex-1">{children}</main>
+    </div>
   );
 }
 
