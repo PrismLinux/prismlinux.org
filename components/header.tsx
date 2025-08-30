@@ -73,7 +73,7 @@ export function Header({ children }: HeaderProps) {
                   <span className="sr-only">Toggle Menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-4/5 p-4">
+              <SheetContent side="right" className="w-4/5 p-4">
                 <Link
                   href="/"
                   className="mb-6 flex items-center"
