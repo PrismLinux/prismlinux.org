@@ -1,0 +1,104 @@
+.wiki-content {
+  @apply text-base leading-relaxed;
+}
+
+.wiki-content h1 {
+  @apply text-3xl font-bold mt-8 mb-4 pb-2 border-b border-border scroll-mt-20;
+}
+
+.wiki-content h2 {
+  @apply text-2xl font-semibold mt-6 mb-3 scroll-mt-20;
+}
+
+.wiki-content h3 {
+  @apply text-xl font-medium mt-5 mb-2 scroll-mt-20;
+}
+
+.wiki-content h4 {
+  @apply text-lg font-medium mt-4 mb-2 scroll-mt-20;
+}
+
+.wiki-content p {
+  @apply mb-4;
+}
+
+.wiki-content ul,
+.wiki-content ol {
+  @apply mb-4 pl-6;
+}
+
+.wiki-content li {
+  @apply mb-2;
+}
+
+.wiki-content blockquote {
+  @apply border-l-4 border-primary pl-6 py-2 my-4 bg-muted/20 rounded-r-lg;
+}
+
+.wiki-content code {
+  @apply bg-muted px-2 py-1 rounded text-sm font-mono;
+}
+
+.wiki-content pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto my-4 border;
+}
+
+.wiki-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.wiki-content table {
+  @apply w-full border-collapse border border-border rounded-lg overflow-hidden my-4;
+}
+
+.wiki-content th {
+  @apply bg-muted/50 font-semibold p-3 text-left border-b border-border;
+}
+
+.wiki-content td {
+  @apply p-3 border-b border-border;
+}
+
+.wiki-content a {
+  @apply text-primary hover:text-primary/80 transition-colors;
+}
+
+.wiki-content img {
+  @apply rounded-lg shadow-md my-4 max-w-full h-auto;
+}
+
+/* Warning/Info/Success boxes */
+.wiki-content .warning {
+  @apply bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 my-4;
+}
+
+.wiki-content .info {
+  @apply bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 my-4;
+}
+
+.wiki-content .success {
+  @apply bg-green-500/10 border border-green-500/20 rounded-lg p-4 my-4;
+}
+
+.wiki-content .error {
+  @apply bg-red-500/10 border border-red-500/20 rounded-lg p-4 my-4;
+}
+
+/* Code syntax highlighting themes */
+.wiki-content pre[class*="language-"] {
+  @apply bg-slate-900 text-slate-100;
+}
+
+.dark .wiki-content pre[class*="language-"] {
+  @apply bg-slate-950 text-slate-50;
+}
+
+/* Smooth scroll behavior for table of contents links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Highlight current section in TOC */
+.toc-link.active {
+  @apply text-primary font-medium;
+}
