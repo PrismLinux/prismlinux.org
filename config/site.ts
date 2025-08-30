@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "PrismLinux",
   url: "https://prismlinux.org",
-  ogImage: "https://prismlinux.org/logo.jpg",
+  ogImage: "https://prismlinux.org/logo.svg",
   description:
     "PrismLinux is a cutting-edge Arch Linux-based distribution optimized for speed, security, gaming, programming, and content creation.",
   mainNav: [

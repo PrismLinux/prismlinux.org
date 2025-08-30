@@ -1,10 +1,10 @@
-import { MainNavItem, SidebarNavItem } from "@/types/nav"
+import { MainNavItem, SidebarNavItem } from "@/types/nav";
 
 interface DocsConfig {
-  mainNav: MainNavItem[]
-  sidebarNav: SidebarNavItem[]
+  mainNav: MainNavItem[];
+  sidebarNav: SidebarNavItem[];
 }
-
+// TODO: update pages
 export const docsConfig: DocsConfig = {
   mainNav: [
     {
@@ -30,12 +30,12 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Introduction",
-          href: "/docs",
+          href: "/wiki",
           items: [],
         },
         {
           title: "Installation",
-          href: "/docs/installation",
+          href: "/wiki/installation",
           items: [],
         },
       ],
@@ -45,17 +45,17 @@ export const docsConfig: DocsConfig = {
       items: [
         {
           title: "Package Management",
-          href: "/docs/package-management",
+          href: "/wiki/package-management",
           items: [],
         },
         {
           title: "System Configuration",
-          href: "/docs/system-configuration",
+          href: "/wiki/system-configuration",
           items: [],
         },
         {
           title: "Troubleshooting",
-          href: "/docs/troubleshooting",
+          href: "/wiki/troubleshooting",
           items: [],
         },
       ],
@@ -76,4 +76,4 @@ export const docsConfig: DocsConfig = {
       ],
     },
   ],
-}
+};

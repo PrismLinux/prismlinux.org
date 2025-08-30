@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getLatestReleases, type Release } from "./lib/sourseforge";
+import { getLatestReleases, type Release } from "../../lib/sourseforge";
 import {
   Download,
   HardDrive,
