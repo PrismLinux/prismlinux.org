@@ -35,7 +35,7 @@ const technologies = [
     icon: "🏗️",
     description: "Rolling release foundation",
   },
-  { name: "GoLang", icon: "🐹", description: "High-performance backend" },
+  // { name: "GoLang", icon: "🐹", description: "High-performance backend" },
   { name: "Rust", icon: "🦀", description: "Memory-safe system programming" },
   {
     name: "Prism Package Manager",
