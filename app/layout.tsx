@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import { cn } from "@/lib/utils";
 import SiteHeader from "@/components/header";
+import SiteFooter from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -26,12 +27,18 @@ export const metadata: Metadata = {
   keywords:
     "Linux, Arch Linux, PrismLinux, Gaming, Programming, Content Creation, Security, Performance",
   authors: [{ name: "CrystalNetwork Studio" }],
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
   openGraph: {
     title: "PrismLinux - High-Performance Arch-Based Distribution",
     description:
       "Experience the future of Linux with PrismLinux - optimized for gamers, developers, and creators.",
     type: "website",
     url: "https://prismlinux.org",
+    images: ["/logo.svg"],
   },
 };
 
@@ -53,8 +60,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="relative flex min-h-screen flex-col">
             <SiteHeader>
-              <div className="flex-1">{children}</div>
+              <main className="flex-1">{children}</main>
             </SiteHeader>
+            <SiteFooter />
           </div>
         </ThemeProvider>
       </body>
