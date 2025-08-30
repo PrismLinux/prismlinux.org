@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -7,7 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Target, Users, Code, Shield, Zap, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Target,
+  Users,
+  Code,
+  Shield,
+  Zap,
+  Heart,
+  Github,
+  Instagram,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About PrismLinux - Our Vision and Mission",
@@ -21,12 +32,27 @@ const teamMembers = [
     role: "Lead Developer",
     description:
       "System architect and Software Engineer with 2+ year in Linux development.",
+    // avatar: "/team/volodia.jpg",
+    github: "https://github.com/VolodiaKraplich",
+    gitlab: "https://gitlab.com/VolodiaKraplich",
   },
   {
     name: "Rain Xelelo",
     role: "Developer",
     description: "Discord maintainer and Software Developer.",
+    // avatar: "/team/rain.jpg",
+    github: "https://github.com/rxelelo",
+    gitlab: "https://gitlab.com/rxelelo",
   },
+  /*{
+    name: "Example",
+    role: "Developer",
+    description: "",
+    avatar: "/team/picture.jpg",
+    github: "https://github.com/",
+    gitlab: "https://gitlab.com/",
+    instagram: "https://instagram.com/",
+  }, */
 ];
 
 const technologies = [
@@ -36,7 +62,6 @@ const technologies = [
     description: "Rolling release foundation",
   },
   // { name: "GoLang", icon: "🐹", description: "High-performance backend" },
-  { name: "Rust", icon: "🦀", description: "Memory-safe system programming" },
   {
     name: "Prism Package Manager",
     icon: "📦",
@@ -163,20 +188,103 @@ export default function AboutPage() {
           {teamMembers.map((member, index) => (
             <Card
               key={index}
-              className="hover:glow-effect transition-all duration-300 w-full max-w-lg"
+              className="hover:glow-effect transition-all duration-300 w-full max-w-lg group hover:scale-105"
             >
               <CardHeader>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-lg">
-                    {member.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center space-x-4 flex-1">
+                    <div className="relative">
+                      {member.avatar ? (
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all duration-300">
+                          <Image
+                            src={member.avatar}
+                            alt={`${member.name} profile picture`}
+                            fill
+                            className="object-cover"
+                            sizes="64px"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white font-bold text-xl ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all duration-300">
+                          {member.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">
+                        {member.name}
+                      </CardTitle>
+                      <Badge variant="secondary" className="mt-1">
+                        {member.role}
+                      </Badge>
+                    </div>
                   </div>
-                  <div>
-                    <CardTitle>{member.name}</CardTitle>
-                    <Badge variant="secondary">{member.role}</Badge>
-                  </div>
+
+                  {/* Social Media Links - Top Right */}
+                  {(member.github || member.gitlab || member.instagram) && (
+                    <div className="flex gap-1 ml-4">
+                      {member.github && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          asChild
+                        >
+                          <a
+                            href={member.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Github className="h-4 w-4" />
+                            <span className="sr-only">GitHub</span>
+                          </a>
+                        </Button>
+                      )}
+                      {member.gitlab && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          asChild
+                        >
+                          <a
+                            href={member.gitlab}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <svg
+                              className="h-4 w-4"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                            >
+                              <path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51 1.22 3.78a.84.84 0 0 1-.3.92z" />
+                            </svg>
+                            <span className="sr-only">GitLab</span>
+                          </a>
+                        </Button>
+                      )}
+                      {member.instagram && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          asChild
+                        >
+                          <a
+                            href={member.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Instagram className="h-4 w-4" />
+                            <span className="sr-only">Instagram</span>
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </CardHeader>
               <CardContent>
