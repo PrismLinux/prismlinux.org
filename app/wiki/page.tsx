@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     "Comprehensive documentation, installation guides, and troubleshooting resources for PrismLinux.",
 };
-
+// TODO: Create wiki
 const categories = [
   {
     name: "Installation",
@@ -32,8 +32,8 @@ const categories = [
     description: "Complete installation guides and setup instructions",
     articles: [
       {
-        title: "Installation Guide",
-        slug: "installation/installation-guide",
+        title: "Get Started",
+        slug: "installation/get-started",
         badge: "Popular",
       },
       {
@@ -177,7 +177,7 @@ export default function WikiPage() {
       </div>
 
       {/* Search */}
-      <div className="max-w-2xl mx-auto mb-16">
+      {/*<div className="max-w-2xl mx-auto mb-16">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
@@ -185,7 +185,7 @@ export default function WikiPage() {
             className="pl-12 h-14 text-lg bg-background/50 backdrop-blur-sm border-border/50"
           />
         </div>
-      </div>
+      </div>*/}
 
       {/* Quick Start Cards */}
       <div className="mb-20">
@@ -372,7 +372,7 @@ export default function WikiPage() {
                 Source code, issues, and development
               </p>
               <Link
-                href="https://gitlab.com/crystalnetwork-studio/"
+                href="https://gitlab.com/crystalnetwork-studio/linux/prismlinux"
                 className="text-primary hover:underline"
               >
                 View Repository →
