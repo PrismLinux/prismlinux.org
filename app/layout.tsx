@@ -33,12 +33,6 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://prismlinux.org",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "PrismLinux - High-Performance Arch-Based Distribution",
-    description:
-      "Experience the future of Linux with PrismLinux - optimized for gamers, developers, and creators.",
-  },
 };
 
 export default function RootLayout({
