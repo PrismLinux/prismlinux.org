@@ -316,13 +316,18 @@ export default function WikiPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href={SITE_CONFIG.social.gitlab + "linux/prismlinux/websites/"}
+                href={
+                  SITE_CONFIG.social.gitlab +
+                  "linux/prismlinux/websites/prismlinux.org"
+                }
+                target="_blank"
                 className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
               >
                 Edit on GitLab
               </Link>
               <Link
                 href="/wiki/contributing"
+                target="_blank"
                 className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-6 py-3 font-medium shadow-lg transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 Contribution Guidelines

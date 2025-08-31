@@ -39,19 +39,23 @@ type PageProps = {
   }>;
 };
 
-// Updated function to handle both .mdx files and index.mdx files
 async function getPost({ slug }: { slug: string[] }) {
-  const basePath = path.join(process.cwd(), "content", "wiki", slug.join("/"));
+  const relativeBasePath = path.join("content", "wiki", ...slug);
 
-  const possiblePaths = [`${basePath}.mdx`, `${basePath}/index.mdx`];
+  const possiblePaths = [
+    `${relativeBasePath}.mdx`,
+    `${relativeBasePath}/index.mdx`,
+  ];
 
-  for (const markdownPath of possiblePaths) {
+  for (const relativePath of possiblePaths) {
     try {
-      const fileContents = await fs.readFile(markdownPath, "utf8");
+      const fullPath = path.join(process.cwd(), relativePath);
+      const fileContents = await fs.readFile(fullPath, "utf8");
       const { data, content } = matter(fileContents);
       return {
         meta: data,
         content: content,
+        filePath: relativePath,
       };
     } catch (error) {
       continue;
@@ -219,6 +223,11 @@ export default async function WikiArticle({ params }: PageProps) {
     notFound();
   }
 
+  const GITLAB_EDIT_URL_BASE =
+    SITE_CONFIG.social.gitlab +
+    "linux/prismlinux/websites/prismlinux.org/-/edit/master/";
+  const gitlabEditUrl = `${GITLAB_EDIT_URL_BASE}${post.filePath}`;
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/50 scroll-smooth">
       <div className="container py-8">
@@ -293,9 +302,20 @@ export default async function WikiArticle({ params }: PageProps) {
                   page.
                 </p>
                 <div className="space-y-2">
-                  <Button size="sm" className="w-full" variant="outline">
-                    <Edit className="h-4 w-4 mr-2" />
-                    Edit on GitLab
+                  <Button
+                    asChild
+                    size="sm"
+                    className="w-full"
+                    variant="outline"
+                  >
+                    <Link
+                      href={gitlabEditUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit on GitLab
+                    </Link>
                   </Button>
                   <Button size="sm" className="w-full" variant="outline">
                     <MessageSquare className="h-4 w-4 mr-2" />
