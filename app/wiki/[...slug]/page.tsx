@@ -31,6 +31,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { MDXComponents } from "@/components/mdx/MDXComponents";
+import { SITE_CONFIG } from "@/lib/metadata";
 
 type PageProps = {
   params: Promise<{
@@ -204,7 +205,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.meta.title} | PrismLinux Wiki`,
+    title: `${post.meta.title}`,
     description: post.meta.description || "PrismLinux Wiki Documentation",
   };
 }
@@ -310,7 +311,7 @@ export default async function WikiArticle({ params }: PageProps) {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Link
-                  href="https://discord.gg/hMrWsTpdqw"
+                  href={SITE_CONFIG.social.discord}
                   className="flex items-center p-3 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"
                 >
                   <MessageSquare className="h-5 w-5 mr-3" />

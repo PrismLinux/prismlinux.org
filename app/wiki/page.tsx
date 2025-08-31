@@ -18,12 +18,10 @@ import {
   Zap,
   Users,
 } from "lucide-react";
+import { pageMetadata, SITE_CONFIG } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "PrismLinux Wiki - Documentation and Guides",
-  description:
-    "Comprehensive documentation, installation guides, and troubleshooting resources for PrismLinux.",
-};
+export const metadata = pageMetadata.wiki;
+
 // TODO: Create wiki
 const categories = [
   {
@@ -318,7 +316,7 @@ export default function WikiPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="https://gitlab.com/crystalnetwork-studio/linux/prismlinux/websites/"
+                href={SITE_CONFIG.social.gitlab + "linux/prismlinux/websites/"}
                 className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
               >
                 Edit on GitLab
@@ -352,7 +350,7 @@ export default function WikiPage() {
                 Real-time chat with developers and users
               </p>
               <Link
-                href="https://discord.gg/hMrWsTpdqw"
+                href={SITE_CONFIG.social.discord}
                 className="text-primary hover:underline"
               >
                 Join Discord →
@@ -372,7 +370,7 @@ export default function WikiPage() {
                 Source code, issues, and development
               </p>
               <Link
-                href="https://gitlab.com/crystalnetwork-studio/linux/prismlinux"
+                href={SITE_CONFIG.social.gitlab + "linux/prismlinux/"}
                 className="text-primary hover:underline"
               >
                 View Repository →

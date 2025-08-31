@@ -1,5 +1,4 @@
 import type React from "react";
-import type { Metadata } from "next";
 import {
   Inter as FontSans,
   JetBrains_Mono as FontMono,
@@ -9,6 +8,7 @@ import SiteHeader from "@/components/header";
 import SiteFooter from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { baseMetadata } from "@/lib/metadata";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,27 +20,7 @@ const fontMono = FontMono({
   variable: "--font-mono",
 });
 
-export const metadata: Metadata = {
-  title: "PrismLinux - High-Performance Arch-Based Distribution",
-  description:
-    "PrismLinux is a cutting-edge Arch Linux-based distribution optimized for speed, security, gaming, programming, and content creation.",
-  keywords:
-    "Linux, Arch Linux, PrismLinux, Gaming, Programming, Content Creation, Security, Performance",
-  authors: [{ name: "CrystalNetwork Studio" }],
-  icons: {
-    icon: "/logo.svg",
-    shortcut: "/logo.svg",
-    apple: "/logo.svg",
-  },
-  openGraph: {
-    title: "PrismLinux - High-Performance Arch-Based Distribution",
-    description:
-      "Experience the future of Linux with PrismLinux - optimized for gamers, developers, and creators.",
-    type: "website",
-    url: "https://prismlinux.org",
-    images: ["/logo.svg"],
-  },
-};
+export const metadata = baseMetadata;
 
 export default function RootLayout({
   children,

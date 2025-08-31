@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import {
   Card,
@@ -19,12 +18,9 @@ import {
   Github,
   Instagram,
 } from "lucide-react";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "About PrismLinux - Our Vision and Mission",
-  description:
-    "Learn about PrismLinux vision, mission, and the team behind this innovative Arch-based Linux distribution.",
-};
+export const metadata = pageMetadata.about;
 
 const teamMembers = [
   {
@@ -35,12 +31,13 @@ const teamMembers = [
     // avatar: "/team/volodia.jpg",
     github: "https://github.com/VolodiaKraplich",
     gitlab: "https://gitlab.com/VolodiaKraplich",
+    instagram: "https://instagram.com/volodiakraplich",
   },
   {
     name: "Rain Xelelo",
     role: "Developer",
-    description: "Discord maintainer and Software Developer.",
-    // avatar: "/team/rain.jpg",
+    description: "Discord maintainer and Software Developer.", // TODO: Update Description
+    avatar: "team/rain.png",
     github: "https://github.com/rxelelo",
     gitlab: "https://gitlab.com/rxelelo",
   },
@@ -61,7 +58,7 @@ const technologies = [
     icon: "🏗️",
     description: "Rolling release foundation",
   },
-  // { name: "GoLang", icon: "🐹", description: "High-performance backend" },
+  // { name: "GoLang", icon: "🐹", description: "TODO" },
   {
     name: "Prism Package Manager",
     icon: "📦",
