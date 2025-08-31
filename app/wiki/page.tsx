@@ -326,7 +326,6 @@ export default function WikiPage() {
               </Link>
               <Link
                 href="/wiki/contributing"
-                target="_blank"
                 className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-6 py-3 font-medium shadow-lg transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 Contribution Guidelines
