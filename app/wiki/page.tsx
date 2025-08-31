@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -342,7 +341,7 @@ export default function WikiPage() {
         <h2 className="text-3xl font-bold mb-8 text-center">
           Community & Support
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           <Card className="text-center hover:glow-effect transition-all duration-300 bg-background/50 backdrop-blur-sm border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center justify-center">
