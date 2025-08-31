@@ -23,7 +23,7 @@ const LINKS = {
       label: "Discord",
     },
     {
-      href: SITE_CONFIG.social.gitlab,
+      href: SITE_CONFIG.social.gitlab + "linux/prismlinux/",
       icon: Gitlab,
       label: "GitLab",
     },
