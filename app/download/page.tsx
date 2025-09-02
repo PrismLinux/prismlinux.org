@@ -1,4 +1,7 @@
+"use client";
+
 import type { Metadata } from "next";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getLatestReleases, type Release } from "../../lib/sourseforge";
+import { type Release, FALLBACK_RELEASES } from "../../lib/sourseforge";
 import {
   Download,
   HardDrive,
@@ -20,13 +23,7 @@ import {
   Zap,
   Info,
 } from "lucide-react";
-
-// --- Page Metadata ---
-export const metadata: Metadata = {
-  title: "Download PrismLinux - Get the Latest Version",
-  description:
-    "Download the latest stable and beta releases of PrismLinux. Includes ISOs, checksums, and system requirements.",
-};
+import { fetchReleases } from ".";
 
 // --- Constants & Static Data ---
 const SYSTEM_REQUIREMENTS = [
@@ -161,7 +158,7 @@ function EmptyState({ message }: { message: string }) {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardContent className="pt-6 text-center">
-        <RefreshCw className="w-8 h-8 mx-auto mb-4 text-muted-foreground" />
+        <RefreshCw className="w-8 h-8 mx-auto mb-4 text-muted-foreground animate-spin" />
         <p className="text-muted-foreground">{message}</p>
       </CardContent>
     </Card>
@@ -247,15 +244,50 @@ function ReleaseTabs({ stable, beta }: { stable: Release[]; beta: Release[] }) {
 }
 
 // --- Main Page Component ---
+export default function DownloadPage() {
+  const [releases, setReleases] = useState<Release[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function DownloadPage() {
-  const allReleases = await getLatestReleases();
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await fetchReleases();
+        setReleases(data);
+      } catch (error) {
+        console.warn("Failed to fetch releases, using fallback", error);
+        setReleases(FALLBACK_RELEASES);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const latestStable = allReleases.find((r) => r.type === "stable");
-  const latestBeta = allReleases.find((r) => r.type === "beta");
+    load();
+  }, []);
+
+  const latestStable = releases.find((r) => r.type === "stable");
+  const latestBeta = releases.find((r) => r.type === "beta");
 
   const stableForTabs = latestStable ? [latestStable] : [];
   const betaForTabs = latestBeta ? [latestBeta] : [];
+
+  // While loading - show fallback
+  if (loading) {
+    return (
+      <div className="container py-20">
+        <header className="text-center space-y-4 mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold">
+            Download <span className="text-primary">PrismLinux</span>
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Fetching the latest releases...
+          </p>
+        </header>
+        <div className="flex justify-center">
+          <EmptyState message="Loading latest releases..." />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-20">

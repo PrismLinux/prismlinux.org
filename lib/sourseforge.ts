@@ -24,7 +24,7 @@ export interface Release {
 
 // --- Fallback Data ---
 
-const FALLBACK_RELEASES: Release[] = [
+export const FALLBACK_RELEASES: Release[] = [
   {
     name: "PrismLinux Desktop",
     version: "2025.08.29",
