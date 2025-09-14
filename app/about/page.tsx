@@ -1,48 +1,50 @@
-import type { Metadata } from "next";
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { pageMetadata } from "@/lib/metadata";
 import {
+  Github,
+  Heart,
+  Instagram,
+  Shield,
   Target,
   Users,
-  Code,
-  Shield,
+  Youtube,
   Zap,
-  Heart,
-  Github,
-  Instagram,
 } from "lucide-react";
+import Image from "next/image";
 
-export const metadata: Metadata = {
-  title: "About PrismLinux - Our Vision and Mission",
-  description:
-    "Learn about PrismLinux vision, mission, and the team behind this innovative Arch-based Linux distribution.",
-};
+export const metadata = pageMetadata.about;
 
 const teamMembers = [
   {
     name: "Volodia Kraplich",
     role: "Lead Developer",
     description:
-      "System architect and Software Engineer with 2+ year in Linux development.",
+      "System architect and Software Engineer with 2+ years in Linux development. Founder of CrystalNetwork Studio, passionate developer focused on creating better systems and continuously improving skills.",
     // avatar: "/team/volodia.jpg",
     github: "https://github.com/VolodiaKraplich",
     gitlab: "https://gitlab.com/VolodiaKraplich",
+    instagram: "https://instagram.com/volodiakraplich",
   },
   {
     name: "Rain Xelelo",
     role: "Developer",
-    description: "Discord maintainer and Software Developer.",
-    // avatar: "/team/rain.jpg",
+    description:
+      "Software Developer and Discord maintainer at PrismLinux. Experienced developer with contributions since 2024, focused on creating efficient software solutions.",
+    avatar: "team/rain-xelelo.png",
     github: "https://github.com/rxelelo",
     gitlab: "https://gitlab.com/rxelelo",
+  },
+  {
+    name: "Vladimir Banov",
+    role: "Translator",
+    description:
+      "Responsible for localization and translation efforts, ensuring PrismLinux is accessible to a global audience. Also active in community support and Discord maintenance. Developer with multiple projects in the Minecraft ecosystem.",
+    avatar: "team/vladimir-banov.jpeg",
+    github: "https://github.com/BANSAFAn",
+    gitlab: "https://gitlab.com/baneronetwo",
+    youtube: "https://www.youtube.com/@Baneronetwo",
   },
   /*{
     name: "Example",
@@ -61,7 +63,6 @@ const technologies = [
     icon: "🏗️",
     description: "Rolling release foundation",
   },
-  // { name: "GoLang", icon: "🐹", description: "High-performance backend" },
   {
     name: "Prism Package Manager",
     icon: "📦",
@@ -70,9 +71,18 @@ const technologies = [
   {
     name: "Linux Kernel",
     icon: "🐧",
-    description: "Latest stable kernel Cachy or Linux-Zen/Linux",
+    description: "Latest stable kernel Cachy, TKG or Linux-Zen/Linux",
   },
-  { name: "GRUB", icon: "🚀", description: "Advanced bootloader" },
+  {
+    name: "GRUB",
+    icon: "🚀",
+    description: "Advanced bootloader",
+  },
+  {
+    name: "Rust",
+    icon: "🦀",
+    description: "Core system tools written in Rust",
+  },
 ];
 
 export default function AboutPage() {
@@ -283,6 +293,23 @@ export default function AboutPage() {
                           </a>
                         </Button>
                       )}
+                      {member.youtube && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          asChild
+                        >
+                          <a
+                            href={member.youtube}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Youtube className="h-4 w-4" />
+                            <span className="sr-only">YouTube</span>
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -300,7 +327,7 @@ export default function AboutPage() {
           Technology <span className="text-primary">Stack</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="flex grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {technologies.map((tech, index) => (
             <Card
               key={index}

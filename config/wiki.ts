@@ -5,7 +5,7 @@ interface DocsConfig {
   sidebarNav: SidebarNavItem[];
 }
 // TODO: update pages
-export const docsConfig: DocsConfig = {
+export const wikiConfig: DocsConfig = {
   mainNav: [
     {
       title: "Home",
@@ -19,10 +19,10 @@ export const docsConfig: DocsConfig = {
       title: "About",
       href: "/about",
     },
-    {
-      title: "Wiki",
-      href: "/wiki",
-    },
+    // {
+    //   title: "Wiki",
+    //   href: "/wiki",
+    // },
   ],
   sidebarNav: [
     {

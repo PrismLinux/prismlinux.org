@@ -1,36 +1,30 @@
-import path from "path";
-import fs from "fs/promises";
-import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import matter from "gray-matter";
-import type { Metadata } from "next";
-import Link from "next/link";
-import React from "react";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { MDXComponents } from "@/components/mdx/MDXComponents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { SITE_CONFIG } from "@/lib/metadata";
+import fs from "fs/promises";
+import matter from "gray-matter";
 import {
   ArrowLeft,
-  Calendar,
-  User,
-  Clock,
   BookOpen,
+  Calendar,
   ChevronRight,
-  Home,
+  Clock,
   Edit,
   GitBranch,
+  Home,
   MessageSquare,
+  User,
 } from "lucide-react";
-import { MDXComponents } from "@/components/mdx/MDXComponents";
+import type { Metadata } from "next";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import path from "path";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 
 type PageProps = {
   params: Promise<{
@@ -38,19 +32,23 @@ type PageProps = {
   }>;
 };
 
-// Updated function to handle both .mdx files and index.mdx files
 async function getPost({ slug }: { slug: string[] }) {
-  const basePath = path.join(process.cwd(), "content", "wiki", slug.join("/"));
+  const relativeBasePath = path.join("content", "wiki", ...slug);
 
-  const possiblePaths = [`${basePath}.mdx`, `${basePath}/index.mdx`];
+  const possiblePaths = [
+    `${relativeBasePath}.mdx`,
+    `${relativeBasePath}/index.mdx`,
+  ];
 
-  for (const markdownPath of possiblePaths) {
+  for (const relativePath of possiblePaths) {
     try {
-      const fileContents = await fs.readFile(markdownPath, "utf8");
+      const fullPath = path.join(process.cwd(), relativePath);
+      const fileContents = await fs.readFile(fullPath, "utf8");
       const { data, content } = matter(fileContents);
       return {
         meta: data,
         content: content,
+        filePath: relativePath,
       };
     } catch (error) {
       continue;
@@ -204,7 +202,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.meta.title} | PrismLinux Wiki`,
+    title: `${post.meta.title}`,
     description: post.meta.description || "PrismLinux Wiki Documentation",
   };
 }
@@ -217,6 +215,11 @@ export default async function WikiArticle({ params }: PageProps) {
   if (!post) {
     notFound();
   }
+
+  const GITLAB_EDIT_URL_BASE =
+    SITE_CONFIG.social.gitlab +
+    "linux/prismlinux/websites/prismlinux.org/-/edit/master/";
+  const gitlabEditUrl = `${GITLAB_EDIT_URL_BASE}${post.filePath}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/50 scroll-smooth">
@@ -292,9 +295,20 @@ export default async function WikiArticle({ params }: PageProps) {
                   page.
                 </p>
                 <div className="space-y-2">
-                  <Button size="sm" className="w-full" variant="outline">
-                    <Edit className="h-4 w-4 mr-2" />
-                    Edit on GitLab
+                  <Button
+                    asChild
+                    size="sm"
+                    className="w-full"
+                    variant="outline"
+                  >
+                    <Link
+                      href={gitlabEditUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit on GitLab
+                    </Link>
                   </Button>
                   <Button size="sm" className="w-full" variant="outline">
                     <MessageSquare className="h-4 w-4 mr-2" />
@@ -310,7 +324,7 @@ export default async function WikiArticle({ params }: PageProps) {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Link
-                  href="https://discord.gg/hMrWsTpdqw"
+                  href={SITE_CONFIG.social.discord}
                   className="flex items-center p-3 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"
                 >
                   <MessageSquare className="h-5 w-5 mr-3" />

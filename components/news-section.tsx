@@ -1,16 +1,16 @@
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Calendar } from "lucide-react";
 
 const news = [
   {
-    title: "PrismLinux 2025.8 Released",
+    title: "PrismLinux 2025.10 Released",
     description:
       "The first stable release is here! This version brings significant performance improvements, enhanced security features, and a polished desktop experience.",
     date: "2025-08-03",

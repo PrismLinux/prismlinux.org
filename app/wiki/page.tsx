@@ -1,5 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -7,23 +6,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { pageMetadata, SITE_CONFIG } from "@/lib/metadata";
 import {
-  Search,
-  Book,
-  Settings,
-  Download,
   AlertTriangle,
-  Zap,
+  Book,
+  Download,
+  Settings,
   Users,
+  Zap,
 } from "lucide-react";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "PrismLinux Wiki - Documentation and Guides",
-  description:
-    "Comprehensive documentation, installation guides, and troubleshooting resources for PrismLinux.",
-};
+export const metadata = pageMetadata.wiki;
+
 // TODO: Create wiki
 const categories = [
   {
@@ -318,7 +313,11 @@ export default function WikiPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="https://gitlab.com/crystalnetwork-studio/linux/prismlinux/websites/"
+                href={
+                  SITE_CONFIG.social.gitlab +
+                  "linux/prismlinux/websites/prismlinux.org"
+                }
+                target="_blank"
                 className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground shadow-lg transition-colors hover:bg-primary/90"
               >
                 Edit on GitLab
@@ -339,7 +338,7 @@ export default function WikiPage() {
         <h2 className="text-3xl font-bold mb-8 text-center">
           Community & Support
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           <Card className="text-center hover:glow-effect transition-all duration-300 bg-background/50 backdrop-blur-sm border-border/50">
             <CardHeader>
               <CardTitle className="flex items-center justify-center">
@@ -352,7 +351,7 @@ export default function WikiPage() {
                 Real-time chat with developers and users
               </p>
               <Link
-                href="https://discord.gg/hMrWsTpdqw"
+                href={SITE_CONFIG.social.discord}
                 className="text-primary hover:underline"
               >
                 Join Discord →
@@ -372,7 +371,7 @@ export default function WikiPage() {
                 Source code, issues, and development
               </p>
               <Link
-                href="https://gitlab.com/crystalnetwork-studio/linux/prismlinux"
+                href={SITE_CONFIG.social.gitlab + "linux/prismlinux/"}
                 className="text-primary hover:underline"
               >
                 View Repository →
