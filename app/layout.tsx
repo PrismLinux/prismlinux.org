@@ -1,14 +1,14 @@
-import type React from "react";
-import {
-  Inter as FontSans,
-  JetBrains_Mono as FontMono,
-} from "next/font/google";
-import { cn } from "@/lib/utils";
-import SiteHeader from "@/components/header";
 import SiteFooter from "@/components/footer";
+import SiteHeader from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
-import "./globals.css";
 import { baseMetadata } from "@/lib/metadata";
+import { cn } from "@/lib/utils";
+import {
+    JetBrains_Mono as FontMono,
+    Inter as FontSans,
+} from "next/font/google";
+import type React from "react";
+import "./globals.css";
 
 const fontSans = FontSans({
   subsets: ["latin"],

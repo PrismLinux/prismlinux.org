@@ -1,37 +1,30 @@
-import path from "path";
-import fs from "fs/promises";
-import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import matter from "gray-matter";
-import type { Metadata } from "next";
-import Link from "next/link";
-import React from "react";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { MDXComponents } from "@/components/mdx/MDXComponents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { SITE_CONFIG } from "@/lib/metadata";
+import fs from "fs/promises";
+import matter from "gray-matter";
 import {
   ArrowLeft,
-  Calendar,
-  User,
-  Clock,
   BookOpen,
+  Calendar,
   ChevronRight,
-  Home,
+  Clock,
   Edit,
   GitBranch,
+  Home,
   MessageSquare,
+  User,
 } from "lucide-react";
-import { MDXComponents } from "@/components/mdx/MDXComponents";
-import { SITE_CONFIG } from "@/lib/metadata";
+import type { Metadata } from "next";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import path from "path";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 
 type PageProps = {
   params: Promise<{

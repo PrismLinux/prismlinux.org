@@ -1,17 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Moon, Sun } from "lucide-react";
-import { useState } from "react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 const navItems = [
   { name: "Download", href: "/download" },
-  { name: "Wiki", href: "/wiki" },
+  // { name: "Wiki", href: "/wiki" },
   { name: "About", href: "/about" },
 ];
 

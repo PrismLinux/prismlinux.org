@@ -1,25 +1,18 @@
-import Image from "next/image";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { pageMetadata } from "@/lib/metadata";
 import {
+  Github,
+  Heart,
+  Instagram,
+  Shield,
   Target,
   Users,
-  Code,
-  Shield,
-  Zap,
-  Heart,
-  Github,
-  Instagram,
   Youtube,
+  Zap,
 } from "lucide-react";
-import { pageMetadata } from "@/lib/metadata";
+import Image from "next/image";
 
 export const metadata = pageMetadata.about;
 
@@ -47,7 +40,7 @@ const teamMembers = [
     name: "Vladimir Banov",
     role: "Translator",
     description:
-      "Responsible for localization and translation efforts, ensuring PrismLinux is accessible to a global audience. Also active in community support and Discord maintenance. Developer with multiple projects in the Minecraft launcher ecosystem.",
+      "Responsible for localization and translation efforts, ensuring PrismLinux is accessible to a global audience. Also active in community support and Discord maintenance. Developer with multiple projects in the Minecraft ecosystem.",
     avatar: "team/vladimir-banov.jpeg",
     github: "https://github.com/BANSAFAn",
     gitlab: "https://gitlab.com/baneronetwo",
@@ -78,7 +71,7 @@ const technologies = [
   {
     name: "Linux Kernel",
     icon: "🐧",
-    description: "Latest stable kernel Cachy or Linux-Zen/Linux",
+    description: "Latest stable kernel Cachy, TKG or Linux-Zen/Linux",
   },
   {
     name: "GRUB",

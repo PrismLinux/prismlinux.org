@@ -1,21 +1,9 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  MessageCircle,
-  Gitlab,
-  Download,
-  BookOpen,
-  Info,
-  Sparkles,
-} from "lucide-react";
 import { SITE_CONFIG } from "@/lib/metadata";
+import { Gitlab, MessageCircle, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 const LINKS = {
-  navigation: [
-    { href: "/download", label: "Download", icon: Download },
-    { href: "/wiki", label: "Documentation", icon: BookOpen },
-    { href: "/about", label: "About", icon: Info },
-  ],
   social: [
     {
       href: SITE_CONFIG.social.discord,
@@ -93,12 +81,6 @@ export default function SiteFooter() {
             © {COMPANY.year} {COMPANY.studio}. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <Link
-              href="/privacy"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Privacy
-            </Link>
             <Link
               href="/terms"
               className="text-muted-foreground hover:text-foreground transition-colors"

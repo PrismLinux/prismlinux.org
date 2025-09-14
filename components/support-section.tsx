@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart, Coffee, DollarSign } from "lucide-react";
+import { Coffee, DollarSign, Heart } from "lucide-react";
+import Link from "next/link";
 
 export function SupportSection() {
   return (

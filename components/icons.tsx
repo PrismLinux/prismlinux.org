@@ -24,9 +24,9 @@ import {
   User,
   X,
   type Icon as LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-export type Icon = typeof LucideIcon
+export type Icon = typeof LucideIcon;
 
 export const Icons = {
   logo: Command,
@@ -53,4 +53,4 @@ export const Icons = {
   gitHub: Github,
   twitter: Twitter,
   check: Check,
-}
+};

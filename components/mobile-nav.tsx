@@ -4,7 +4,7 @@ import * as React from "react";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
 
-import { docsConfig } from "@/config/docs";
+import { wikiConfig } from "@/config/wiki";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
@@ -65,7 +65,7 @@ export function MobileNav() {
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
-            {docsConfig.mainNav?.map(
+            {wikiConfig.mainNav?.map(
               (item) =>
                 item.href && (
                   <MobileLink
@@ -75,11 +75,11 @@ export function MobileNav() {
                   >
                     {item.title}
                   </MobileLink>
-                ),
+                )
             )}
           </div>
           <div className="flex flex-col space-y-2">
-            {docsConfig.sidebarNav.map((item, index) => (
+            {wikiConfig.sidebarNav.map((item, index) => (
               <div key={index} className="flex flex-col space-y-3 pt-6">
                 <h4 className="font-medium">{item.title}</h4>
                 {item?.items?.length &&

@@ -81,7 +81,7 @@ const _formatBytes = (bytes: string | number): string => {
  * Parses a raw RSS item from the XML feed into a structured object.
  */
 const _parseRssItem = (
-  item: any,
+  item: any
 ): Partial<Release> | { checksumUrl: string; baseName: string } | null => {
   const title: string = item.title || "";
   const link: string = item.link || "";
@@ -132,8 +132,8 @@ const _parseRssItem = (
     const type = title.toLowerCase().includes("beta")
       ? "beta"
       : title.toLowerCase().includes("alpha")
-        ? "alpha"
-        : "stable";
+      ? "alpha"
+      : "stable";
 
     return {
       name: `PrismLinux ${edition}`,
@@ -207,7 +207,7 @@ export const getLatestReleases = async (): Promise<Release[]> => {
 
     if (releases.length === 0) {
       console.warn(
-        "SourceForge fetch returned no releases. Using fallback data.",
+        "SourceForge fetch returned no releases. Using fallback data."
       );
       return FALLBACK_RELEASES;
     }
@@ -228,7 +228,7 @@ export const getLatestReleases = async (): Promise<Release[]> => {
   } catch (error) {
     console.error(
       "Failed to fetch/parse SourceForge releases. Using fallback data.",
-      error,
+      error
     );
     return FALLBACK_RELEASES;
   }

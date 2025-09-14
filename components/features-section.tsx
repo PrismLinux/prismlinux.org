@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Zap, Shield, Gamepad2, Code, Palette, Package } from "lucide-react";
+import { Code, Gamepad2, Package, Palette, Shield, Zap } from "lucide-react";
 
 const features = [
   {

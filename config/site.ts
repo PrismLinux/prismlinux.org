@@ -17,10 +17,10 @@ export const siteConfig = {
       title: "About",
       href: "/about",
     },
-    {
-      title: "Wiki",
-      href: "/wiki",
-    },
+    // {
+    //   title: "Wiki",
+    //   href: "/wiki",
+    // },
   ],
 };
 

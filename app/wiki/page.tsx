@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -6,18 +6,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Search,
-  Book,
-  Settings,
-  Download,
-  AlertTriangle,
-  Zap,
-  Users,
-} from "lucide-react";
 import { pageMetadata, SITE_CONFIG } from "@/lib/metadata";
+import {
+  AlertTriangle,
+  Book,
+  Download,
+  Settings,
+  Users,
+  Zap,
+} from "lucide-react";
+import Link from "next/link";
 
 export const metadata = pageMetadata.wiki;
 

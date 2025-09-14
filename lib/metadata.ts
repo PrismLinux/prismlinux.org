@@ -198,4 +198,19 @@ export const pageMetadata = {
     path: "/support",
     keywords: ["support", "community", "help", "discord", "forum"],
   }),
+
+  terms: createPageMetadata({
+    title: "Terms of Service",
+    description:
+      "Read the terms and conditions for using PrismLinux, an open-source Linux distribution focused on security and privacy.",
+    path: "/terms",
+    keywords: [
+      "terms of service",
+      "legal",
+      "privacy",
+      "open source",
+      "license",
+      "CrystalNetwork Studio",
+    ],
+  }),
 } as const;
