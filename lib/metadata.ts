@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE_CONFIG = {
   name: "PrismLinux",
   description:
-    "High-performance Arch-based distribution for gaming, programming, and content creation",
+    "High-performance Arch-based distribution for gaming, programming, and content creation.",
   url: "https://prismlinux.org",
   author: "CrystalNetwork Studio",
   keywords: [
@@ -37,11 +37,7 @@ export const baseMetadata: Metadata = {
 
   // Icons
   icons: {
-    icon: [
-      { url: "/logo.svg", type: "image/svg+xml" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-    ],
+    icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
     shortcut: "/favicon.ico",
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
@@ -64,15 +60,6 @@ export const baseMetadata: Metadata = {
     ],
   },
 
-  // Twitter
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_CONFIG.name,
-    description: SITE_CONFIG.description,
-    images: ["/og-image.png"],
-    creator: `@${SITE_CONFIG.name.toLowerCase()}`,
-  },
-
   // Robots
   robots: {
     index: true,
@@ -87,9 +74,9 @@ export const baseMetadata: Metadata = {
   },
 
   // Verification
-  verification: {
-    google: "your-google-verification-code",
-  },
+  // verification: {
+  //   google: "your-google-verification-code",
+  // },
 };
 
 // Function to create metadata for specific pages
@@ -126,12 +113,6 @@ export function createPageMetadata({
         height: 630,
         alt: `${title} - ${SITE_CONFIG.name}`,
       })),
-    },
-
-    twitter: {
-      title,
-      description,
-      images,
     },
 
     robots: noIndex
