@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  experimental: {
+    mdxRs: true,
+  },
+};
 
-export default nextConfig
+export default nextConfig;

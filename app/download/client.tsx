@@ -21,7 +21,11 @@ import {
   Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { type Release, FALLBACK_RELEASES } from "../../lib/sourseforge";
+import {
+  FALLBACK_RELEASES,
+  type Release,
+  getLatestReleases,
+} from "../../lib/sourseforge";
 
 // --- Constants & Static Data ---
 const SYSTEM_REQUIREMENTS = [
@@ -249,12 +253,8 @@ export default function DownloadPageClient() {
   useEffect(() => {
     const load = async () => {
       try {
-        // Create an API endpoint to fetch releases
-        const response = await fetch("/api/releases");
-        if (!response.ok) {
-          throw new Error("Failed to fetch releases");
-        }
-        const data = await response.json();
+        // Directly call the getLatestReleases function
+        const data = await getLatestReleases();
         setReleases(data);
       } catch (error) {
         console.warn("Failed to fetch releases, using fallback", error);

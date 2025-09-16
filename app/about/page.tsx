@@ -327,7 +327,7 @@ export default function AboutPage() {
           Technology <span className="text-primary">Stack</span>
         </h2>
 
-        <div className="flex grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {technologies.map((tech, index) => (
             <Card
               key={index}
@@ -337,7 +337,7 @@ export default function AboutPage() {
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {tech.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-primary">
+                <h3 className="text-lg font-bold mb-2 text-primary">
                   {tech.name}
                 </h3>
                 <p className="text-muted-foreground text-sm">

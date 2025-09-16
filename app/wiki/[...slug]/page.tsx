@@ -23,14 +23,37 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import path from "path";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
 
-type PageProps = {
-  params: Promise<{
-    slug: string[];
-  }>;
-};
+export async function generateStaticParams() {
+  const baseDir = path.join(process.cwd(), "content", "wiki");
+
+  const mdxFiles: string[] = [];
+
+  async function findMdxFiles(dir: string) {
+    const files = await fs.readdir(dir, { withFileTypes: true });
+    for (const file of files) {
+      const filePath = path.join(dir, file.name);
+      if (file.isDirectory()) {
+        await findMdxFiles(filePath);
+      } else if (file.isFile() && filePath.endsWith(".mdx")) {
+        const relativePath = path.relative(baseDir, filePath);
+        mdxFiles.push(relativePath);
+      }
+    }
+  }
+
+  await findMdxFiles(baseDir);
+
+  return mdxFiles.map((filePath) => {
+    const slug = filePath.replace(/\.mdx$/, "").split(path.sep);
+
+    if (slug[slug.length - 1] === "index") {
+      slug.pop();
+    }
+
+    return { slug };
+  });
+}
 
 async function getPost({ slug }: { slug: string[] }) {
   const relativeBasePath = path.join("content", "wiki", ...slug);
@@ -45,6 +68,7 @@ async function getPost({ slug }: { slug: string[] }) {
       const fullPath = path.join(process.cwd(), relativePath);
       const fileContents = await fs.readFile(fullPath, "utf8");
       const { data, content } = matter(fileContents);
+
       return {
         meta: data,
         content: content,
@@ -54,172 +78,60 @@ async function getPost({ slug }: { slug: string[] }) {
       continue;
     }
   }
-
   return null;
 }
 
-// Breadcrumb component
-function WikiBreadcrumb({ slug }: { slug: string[] }) {
-  const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    { label: "Wiki", href: "/wiki" },
-  ];
-
-  let currentPath = "/wiki";
-  slug.forEach((segment, index) => {
-    currentPath += `/${segment}`;
-    const isLast = index === slug.length - 1;
-    breadcrumbItems.push({
-      label: segment
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" "),
-      href: isLast ? "" : currentPath,
-    });
-  });
-
-  return (
-    <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8">
-      {breadcrumbItems.map((item, index) => (
-        <div key={index} className="flex items-center">
-          {index === 0 ? (
-            <Home className="h-4 w-4 mr-2" />
-          ) : (
-            <ChevronRight className="h-4 w-4 mx-2" />
-          )}
-          {item.href ? (
-            <Link
-              href={item.href}
-              className="hover:text-primary transition-colors"
-            >
-              {item.label}
-            </Link>
-          ) : (
-            <span className="text-foreground font-medium">{item.label}</span>
-          )}
-        </div>
-      ))}
-    </nav>
-  );
-}
-
-// Table of Contents component
-function TableOfContents({ content }: { content: string }) {
-  const headings = content
-    .split("\n")
-    .filter((line) => line.match(/^#{2,4}\s/))
-    .map((line) => {
-      const text = line.replace(/^#+\s/, "").trim();
-      const level = line.match(/^#+/)?.[0].length || 0;
-
-      const id = text
-        .toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/^-+|-+$/g, "");
-
-      return { level, text, id };
-    })
-    .slice(0, 10);
-
-  if (headings.length === 0) return null;
-
-  return (
-    <div className="static">
-      <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center">
-            <BookOpen className="h-5 w-5 mr-2" />
-            Table of Contents
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {headings.map((heading) => (
-            <a
-              key={heading.id}
-              href={`#${heading.id}`}
-              className={`block text-sm hover:text-primary transition-colors ${
-                heading.level === 2
-                  ? "ml-0 font-medium"
-                  : heading.level === 3
-                    ? "ml-4"
-                    : "ml-8"
-              }`}
-            >
-              {heading.text}
-            </a>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-// Article metadata component
-function ArticleMetadata({ meta, content }: { meta: any; content: string }) {
-  const readingTime = Math.ceil(content.length / 1500) || 1;
-
-  return (
-    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
-      {meta.author && (
-        <div className="flex items-center">
-          <User className="h-4 w-4 mr-1" />
-          {meta.author}
-        </div>
-      )}
-      {meta.lastModified && (
-        <div className="flex items-center">
-          <Calendar className="h-4 w-4 mr-1" />
-          {new Date(meta.lastModified).toLocaleDateString()}
-        </div>
-      )}
-      <div className="flex items-center">
-        <Clock className="h-4 w-4 mr-1" />
-        {readingTime} min read
-      </div>
-      {meta.category && (
-        <Badge variant="secondary" className="ml-auto">
-          {meta.category}
-        </Badge>
-      )}
-    </div>
-  );
-}
-
-// Generate metadata
+// --- GENERATE METADATA ---
 export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  params: { slug },
+}: {
+  params: { slug: string[] };
+}): Promise<Metadata> {
   const post = await getPost({ slug });
 
   if (!post) {
     return {
-      title: "Not Found",
+      title: "Page Not Found",
       description: "The page you are looking for does not exist.",
     };
   }
 
   return {
-    title: `${post.meta.title}`,
-    description: post.meta.description || "PrismLinux Wiki Documentation",
+    title: `${post.meta.title} - ${SITE_CONFIG.name}`,
+    description: post.meta.description || SITE_CONFIG.description,
   };
 }
 
-// Main component
-export default async function WikiArticle({ params }: PageProps) {
-  const { slug } = await params;
+export default async function WikiArticle({
+  params: { slug },
+}: {
+  params: { slug: string[] };
+}) {
   const post = await getPost({ slug });
 
   if (!post) {
     notFound();
   }
 
-  const GITLAB_EDIT_URL_BASE =
-    SITE_CONFIG.social.gitlab +
-    "linux/prismlinux/websites/prismlinux.org/-/edit/master/";
-  const gitlabEditUrl = `${GITLAB_EDIT_URL_BASE}${post.filePath}`;
+  const gitlabEditUrl = `${SITE_CONFIG.social.gitlab}/linux/prismlinux/websites/prismlinux.org/-/edit/master/${post.filePath}`;
+
+  // These plugins are dynamically imported to resolve the diagnostic errors within the given constraints.
+  const { default: remarkGfm } = await import("remark-gfm");
+  const { default: rehypeSlug } = await import("rehype-slug");
+
+  const MdxContent = (
+    <MDXRemote
+      source={post.content}
+      components={MDXComponents}
+      options={{
+        parseFrontmatter: true,
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeSlug],
+        },
+      }}
+    />
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/50 scroll-smooth">
@@ -255,16 +167,7 @@ export default async function WikiArticle({ params }: PageProps) {
             <Card className="bg-background/50 backdrop-blur border-border/50">
               <CardContent className="p-8">
                 <article className="wiki-content prose prose-lg max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-code:text-primary prose-pre:bg-muted/50 prose-pre:border prose-blockquote:border-l-primary prose-blockquote:bg-muted/20 prose-blockquote:pl-6 prose-blockquote:py-4 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-table:text-sm prose-th:bg-muted/50 prose-td:border-border prose-th:border-border">
-                  <MDXRemote
-                    source={post.content}
-                    components={MDXComponents}
-                    options={{
-                      mdxOptions: {
-                        rehypePlugins: [rehypeSlug],
-                        remarkPlugins: [remarkGfm],
-                      },
-                    }}
-                  />
+                  {MdxContent}
                 </article>
               </CardContent>
             </Card>
@@ -352,6 +255,125 @@ export default async function WikiArticle({ params }: PageProps) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function WikiBreadcrumb({ slug }: { slug: string[] }) {
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Wiki", href: "/wiki" },
+  ];
+  let currentPath = "/wiki";
+  slug.forEach((segment, index) => {
+    currentPath += `/${segment}`;
+    const isLast = index === slug.length - 1;
+    breadcrumbItems.push({
+      label: segment
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" "),
+      href: isLast ? "" : currentPath,
+    });
+  });
+  return (
+    <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8">
+      {breadcrumbItems.map((item, index) => (
+        <div key={index} className="flex items-center">
+          {index === 0 ? (
+            <Home className="h-4 w-4 mr-2" />
+          ) : (
+            <ChevronRight className="h-4 w-4 mx-2" />
+          )}
+          {item.href ? (
+            <Link
+              href={item.href}
+              className="hover:text-primary transition-colors"
+            >
+              {item.label}
+            </Link>
+          ) : (
+            <span className="text-foreground font-medium">{item.label}</span>
+          )}
+        </div>
+      ))}
+    </nav>
+  );
+}
+
+function TableOfContents({ content }: { content: string }) {
+  const headings = content
+    .split("\n")
+    .filter((line) => line.match(/^#{2,4}\s/))
+    .map((line) => {
+      const text = line.replace(/^#+\s/, "").trim();
+      const level = line.match(/^#+/)?.[0].length || 0;
+      const id = text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      return { level, text, id };
+    })
+    .slice(0, 10);
+  if (headings.length === 0) return null;
+  return (
+    <div className="static">
+      <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg flex items-center">
+            <BookOpen className="h-5 w-5 mr-2" />
+            Table of Contents
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {headings.map((heading) => (
+            <a
+              key={heading.id}
+              href={`#${heading.id}`}
+              className={`block text-sm hover:text-primary transition-colors ${
+                heading.level === 2
+                  ? "ml-0 font-medium"
+                  : heading.level === 3
+                    ? "ml-4"
+                    : "ml-8"
+              }`}
+            >
+              {heading.text}
+            </a>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function ArticleMetadata({ meta, content }: { meta: any; content: string }) {
+  const readingTime = Math.ceil(content.length / 1500) || 1;
+  return (
+    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
+      {meta.author && (
+        <div className="flex items-center">
+          <User className="h-4 w-4 mr-1" />
+          {meta.author}
+        </div>
+      )}
+      {meta.lastModified && (
+        <div className="flex items-center">
+          <Calendar className="h-4 w-4 mr-1" />
+          {new Date(meta.lastModified).toLocaleDateString()}
+        </div>
+      )}
+      <div className="flex items-center">
+        <Clock className="h-4 w-4 mr-1" />
+        {readingTime} min read
+      </div>
+      {meta.category && (
+        <Badge variant="secondary" className="ml-auto">
+          {meta.category}
+        </Badge>
+      )}
     </div>
   );
 }

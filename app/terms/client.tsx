@@ -54,7 +54,7 @@ export default function TermsPage() {
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
-              https://gitlab.com/crystalnetwork-studio/linux/prismlinux/
+              GitLab PrismLinux
             </a>{" "}
             and we are committed to providing a free, transparent, secure, and
             privacy-respecting operating system.
@@ -414,7 +414,7 @@ export default function TermsPage() {
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                https://gitlab.com/crystalnetwork-studio/linux/prismlinux/
+                GitLab
               </a>
             </div>
             <div>

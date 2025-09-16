@@ -2,27 +2,26 @@
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
   AlertTriangle,
-  Info as InfoIcon,
+  Check,
   CheckCircle,
-  XCircle,
-  Terminal,
+  Copy,
   Download,
   ExternalLink,
-  Copy,
-  Check,
+  Info as InfoIcon,
+  XCircle,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState, ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
-// Тип для компонентів з children
+// Type for components with children
 type WithChildren = { children: ReactNode };
 
-// Тип для TableCell з опціональним header
+// Type for TableCell with optional header
 type TableCellProps = { children: ReactNode; header?: boolean };
 
 // Warning callout
@@ -119,7 +118,7 @@ export function CodeBlock({
 }) {
   const [copied, setCopied] = useState(false);
 
-  // Витягнення мови з className (наприклад, "language-js")
+  // Extract language from className (e.g., ‘language-js’)
   const language = props.className?.replace(/language-/, "") || "bash";
 
   const copyToClipboard = () => {
