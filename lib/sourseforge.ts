@@ -28,15 +28,15 @@ export interface Release {
 export const FALLBACK_RELEASES: Release[] = [
   {
     name: "PrismLinux Desktop",
-    version: "2025.08.29",
-    size: "2.6 GB",
+    version: "2025.10.01",
+    size: "2.4 GB",
     architecture: "x86_64",
     downloadUrl:
-      "https://sourceforge.net/projects/prismlinux/files/Beta/2025.08.29/PrismLinux-desktop-2025.08.29-x86_64.iso/download",
+      "https://sourceforge.net/projects/prismlinux/files/Beta/2025.10.01/PrismLinux-2025.10.01-x86_64.iso/download",
     releaseDate: new Date().toLocaleDateString(),
     type: "beta",
     sha256Url:
-      "https://sourceforge.net/projects/prismlinux/files/Beta/2025.08.29/PrismLinux-desktop-2025.08.29-x86_64.iso.sha256/download",
+      "https://sourceforge.net/projects/prismlinux/files/Beta/2025.10.01/PrismLinux-2025.10.01-x86_64.iso/download",
   },
 ];
 
