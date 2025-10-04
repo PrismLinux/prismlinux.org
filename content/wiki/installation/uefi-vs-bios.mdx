@@ -1,0 +1,299 @@
+---
+title: UEFI vs BIOS
+description: Understanding the differences between UEFI and BIOS boot modes for PrismLinux installation
+lastModified: 2025-10-05
+author: PrismLinux Team
+category: Installation
+---
+
+## Overview
+
+When installing PrismLinux, one of the most important decisions is choosing between UEFI (Unified Extensible Firmware Interface) and Legacy BIOS boot modes. This guide explains the differences, helps you determine which mode your system uses, and provides installation guidance for each.
+
+## What is BIOS?
+
+**BIOS (Basic Input/Output System)** is the traditional firmware interface that has been used since the 1980s. It initializes hardware during the boot process and provides runtime services for operating systems.
+
+### BIOS Characteristics
+
+- **MBR Partitioning**: Uses Master Boot Record partition scheme
+- **16-bit Mode**: Operates in 16-bit processor mode
+- **Limited Storage**: Supports drives up to 2TB
+- **Simple Interface**: Text-based configuration menus
+- **Boot Process**: Reads boot sector from MBR on disk
+
+### BIOS Advantages
+
+- Compatible with older hardware
+- Simpler partitioning scheme
+- Works with older operating systems
+- Well-documented and widely understood
+
+### BIOS Limitations
+
+- Maximum 4 primary partitions (without extended partitions)
+- 2TB disk size limit
+- Slower boot times
+- Limited security features
+- No support for modern features like Secure Boot
+
+## What is UEFI?
+
+**UEFI (Unified Extensible Firmware Interface)** is the modern replacement for BIOS, designed to address its limitations and provide enhanced functionality.
+
+### UEFI Characteristics
+
+- **GPT Partitioning**: Uses GUID Partition Table scheme
+- **32-bit or 64-bit Mode**: Modern processor modes
+- **Large Storage Support**: Handles drives over 2TB (up to 9.4ZB)
+- **Graphical Interface**: Mouse-driven setup menus
+- **EFI System Partition**: Dedicated FAT32 partition for bootloaders
+
+### UEFI Advantages
+
+- Faster boot times
+- Support for drives larger than 2TB
+- Up to 128 primary partitions on GPT
+- Secure Boot capability
+- Network boot support
+- Better hardware initialization
+- Modular architecture
+
+### UEFI Considerations
+
+- Requires compatible hardware (most systems from 2012+)
+- More complex partitioning requirements
+- Secure Boot may need configuration for Linux
+
+## Key Differences Summary
+
+| Feature              | BIOS (Legacy) | UEFI             |
+| -------------------- | ------------- | ---------------- |
+| **Partition Scheme** | MBR           | GPT              |
+| **Max Disk Size**    | 2TB           | 9.4ZB            |
+| **Max Partitions**   | 4 primary     | 128 primary      |
+| **Boot Speed**       | Slower        | Faster           |
+| **Interface**        | Text-based    | Graphical        |
+| **Secure Boot**      | No            | Yes              |
+| **Network Boot**     | Limited       | Full PXE support |
+| **Modern Features**  | No            | Yes              |
+
+## Determining Your System's Boot Mode
+
+### Check Current Boot Mode (If Linux is Already Installed)
+
+Open a terminal and run:
+
+```bash
+[ -d /sys/firmware/efi ] && echo "UEFI" || echo "BIOS"
+```
+
+Or check with:
+
+```bash
+ls /sys/firmware/efi
+```
+
+If the directory exists, you're running in UEFI mode.
+
+### Check in Firmware Settings
+
+1. **Restart your computer**
+2. **Enter firmware setup** (usually by pressing F2, F10, F12, DEL, or ESC during startup)
+3. **Look for these indicators**:
+   - Boot mode setting showing "UEFI" or "Legacy"
+   - Secure Boot option (UEFI only)
+   - CSM (Compatibility Support Module) option
+   - UEFI boot entries in boot menu
+
+### Visual Clues
+
+- **UEFI**: Graphical interface with mouse support, modern appearance
+- **BIOS**: Text-based blue/gray menus, keyboard-only navigation
+
+## Installing PrismLinux with UEFI
+
+### Requirements
+
+- System with UEFI firmware
+- USB drive created in UEFI mode
+- GPT partition table on target drive
+
+### Partitioning for UEFI
+
+You need at minimum:
+
+1. **EFI System Partition (ESP)**
+   - Size: 512MB - 1GB recommended
+   - Format: FAT32
+   - Mount: `/boot/efi`
+   - Flags: `boot`, `esp`
+
+2. **Root Partition**
+   - Size: 30GB minimum (50GB+ recommended)
+   - Format: ext4 (or your preferred filesystem)
+   - Mount: `/`
+
+3. **Home Partition** (optional)
+   - Size: Remaining space
+   - Format: ext4
+   - Mount: `/home`
+
+### UEFI Installation Steps
+
+1. **Boot PrismLinux installer in UEFI mode**
+   - Select UEFI boot option from boot menu
+   - Look for "UEFI:" prefix in boot entries
+
+2. **During partitioning**:
+
+   ```
+   /dev/sda1  512M   FAT32    /boot/efi  (esp, boot flags)
+   /dev/sda3  50G    ext4     /
+   /dev/sda4  rest   ext4     /home
+   ```
+
+3. **Install bootloader**
+   - Target: `/boot/efi`
+   - Bootloader: GRUB for UEFI
+
+4. **Verify installation**
+   - After reboot, check firmware boot entries
+   - PrismLinux should appear in UEFI boot menu
+
+### Troubleshooting UEFI Installation
+
+**Secure Boot Issues**:
+
+- Disable Secure Boot in firmware settings, or
+- Enroll PrismLinux keys (if supported)
+
+**Boot entry not created**:
+
+```bash
+sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=PrismLinux
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+**Wrong boot mode**:
+
+- Ensure USB was created for UEFI
+- Check that CSM/Legacy Support is disabled
+
+## Installing PrismLinux with BIOS
+
+### Requirements
+
+- System with traditional BIOS firmware
+- USB drive created in BIOS/Legacy mode
+- MBR partition table on target drive
+
+### Partitioning for BIOS
+
+You need at minimum:
+
+1. **Root Partition**
+   - Size: 20GB minimum (50GB+ recommended)
+   - Format: btrfs
+   - Mount: `/`
+   - Flag: `bootable`
+
+2. **Home Partition** (optional)
+   - Size: Remaining space
+   - Format: btrfs
+   - Mount: `/home`
+
+## Dual Boot Considerations
+
+### With Windows
+
+**UEFI Mode (Windows 8/10/11)**:
+
+- Windows uses UEFI by default on modern systems
+- Install PrismLinux
+- Both systems share the ESP
+- GRUB will detect Windows automatically
+
+**BIOS Mode (Windows 7 and older)**:
+
+- Install PrismLinux
+- Use separate partitions
+- GRUB will detect Windows automatically
+
+### Boot Order
+
+In UEFI systems:
+
+1. Enter firmware settings
+2. Adjust boot order
+3. Set PrismLinux or Windows as default
+
+In BIOS systems:
+
+- GRUB provides boot menu
+- Edit `/etc/default/grub` to change defaults
+
+## Converting Between UEFI and BIOS
+
+### BIOS to UEFI Conversion
+
+This is complex and risky. It requires:
+
+1. Converting MBR to GPT partition table
+2. Creating an EFI System Partition
+3. Reinstalling bootloader in UEFI mode
+4. Changing firmware settings
+
+**Recommendation**: Backup data and perform fresh UEFI installation instead.
+
+### Tools for Conversion
+
+- `gdisk` - Can convert MBR to GPT
+- `sgdisk` - Scripted GPT operations
+- Always backup before conversion
+
+## Which Should You Choose?
+
+### Choose UEFI if:
+
+- Your hardware supports it (2012 or newer)
+- You have drives larger than 2TB
+- You want faster boot times
+- You need Secure Boot
+- You're dual-booting with Windows 8+
+- You're setting up a new system
+
+### Choose BIOS if:
+
+- Your hardware is older (pre-2012)
+- You need compatibility with legacy systems
+- Your firmware doesn't support UEFI properly
+- You're working with older drives under 2TB
+- You prefer simplicity
+
+### Recommendation for New Installations
+
+**Use UEFI mode** for all modern systems. It's the current standard and provides better performance, security, and features. Only use BIOS/Legacy mode if your hardware doesn't support UEFI or you have specific compatibility requirements.
+
+## Common Issues and Solutions
+
+### Mixed Mode Issues
+
+If your system has both UEFI and CSM/Legacy support enabled:
+
+1. Choose one mode and stick with it
+2. Disable CSM in UEFI settings (to force UEFI only)
+3. Create installation media matching your chosen mode
+
+### Secure Boot Blocking Installation
+
+1. **Option 1**: Disable Secure Boot in firmware settings
+2. **Option 2**: Use signed bootloaders (if PrismLinux provides them)
+3. **Option 3**: Enroll custom keys
+
+## Additional Resources
+
+- [GRUB Documentation](https://www.gnu.org/software/grub/manual/)
+- [UEFI Specification](https://uefi.org/specifications)
+- [PrismLinux Installation Guide](/wiki/installation/installation-guide)
+- [Troubleshooting Boot Issues](/wiki/troubleshooting/boot-issues)

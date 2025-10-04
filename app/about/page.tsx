@@ -2,16 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { pageMetadata } from "@/lib/metadata";
-import {
-  Github,
-  Heart,
-  Instagram,
-  Shield,
-  Target,
-  Users,
-  Youtube,
-  Zap,
-} from "lucide-react";
+import { Github, Heart, Instagram, Shield, Target, Users, Youtube, Zap } from "lucide-react";
 import Image from "next/image";
 
 export const metadata = pageMetadata.about;
@@ -79,9 +70,9 @@ const technologies = [
     description: "Advanced bootloader",
   },
   {
-    name: "Rust",
-    icon: "🦀",
-    description: "Core system tools written in Rust",
+    name: "Rust + Golang + C",
+    icon: "⚡",
+    description: "Core system tools written in Rust, Go and C",
   },
 ];
 
@@ -107,15 +98,13 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              PrismLinux was created to bridge the gap between performance,
-              security, and usability in the Linux ecosystem. We believe that
-              users shouldn't have to choose between a system that's fast,
-              secure, or easy to use.
+              PrismLinux was created to bridge the gap between performance, security, and usability
+              in the Linux ecosystem. We believe that users shouldn't have to choose between a
+              system that's fast, secure, or easy to use.
             </p>
             <p className="text-muted-foreground">
-              Our mission is to provide a Linux distribution that excels in all
-              areas - from gaming performance to development workflows, from
-              content creation to system security.
+              Our mission is to provide a Linux distribution that excels in all areas - from gaming
+              performance to development workflows, from content creation to system security.
             </p>
           </CardContent>
         </Card>
@@ -129,13 +118,12 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              We believe in the power of open source and community-driven
-              development. PrismLinux is built by users, for users, with
-              transparency and collaboration at its core.
+              We believe in the power of open source and community-driven development. PrismLinux is
+              built by users, for users, with transparency and collaboration at its core.
             </p>
             <p className="text-muted-foreground">
-              Every decision we make is guided by three principles: performance
-              optimization, security hardening, and user experience enhancement.
+              Every decision we make is guided by three principles: performance optimization,
+              security hardening, and user experience enhancement.
             </p>
           </CardContent>
         </Card>
@@ -153,9 +141,8 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Existing distributions often compromise performance for
-                compatibility. We optimized every component for maximum speed
-                and efficiency.
+                Existing distributions often compromise performance for compatibility. We optimized
+                every component for maximum speed and efficiency.
               </p>
             </CardContent>
           </Card>
@@ -167,9 +154,8 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Security shouldn't be an afterthought. PrismLinux implements
-                security best practices from the ground up, protecting users
-                without compromising usability.
+                Security shouldn't be an afterthought. PrismLinux implements security best practices
+                from the ground up, protecting users without compromising usability.
               </p>
             </CardContent>
           </Card>
@@ -181,9 +167,8 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                We listen to our community and build features that users
-                actually need. Every update is shaped by real user feedback and
-                requirements.
+                We listen to our community and build features that users actually need. Every update
+                is shaped by real user feedback and requirements.
               </p>
             </CardContent>
           </Card>
@@ -237,39 +222,17 @@ export default function AboutPage() {
                   {(member.github || member.gitlab || member.instagram) && (
                     <div className="flex gap-1 ml-4">
                       {member.github && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          asChild
-                        >
-                          <a
-                            href={member.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
+                        <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                          <a href={member.github} target="_blank" rel="noopener noreferrer">
                             <Github className="h-4 w-4" />
                             <span className="sr-only">GitHub</span>
                           </a>
                         </Button>
                       )}
                       {member.gitlab && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          asChild
-                        >
-                          <a
-                            href={member.gitlab}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <svg
-                              className="h-4 w-4"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                            >
+                        <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                          <a href={member.gitlab} target="_blank" rel="noopener noreferrer">
+                            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M22.65 14.39L12 22.13 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 4.82 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.49h8.1l2.44-7.51A.42.42 0 0 1 18.6 2a.43.43 0 0 1 .58 0 .42.42 0 0 1 .11.18l2.44 7.51 1.22 3.78a.84.84 0 0 1-.3.92z" />
                             </svg>
                             <span className="sr-only">GitLab</span>
@@ -277,34 +240,16 @@ export default function AboutPage() {
                         </Button>
                       )}
                       {member.instagram && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          asChild
-                        >
-                          <a
-                            href={member.instagram}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
+                        <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                          <a href={member.instagram} target="_blank" rel="noopener noreferrer">
                             <Instagram className="h-4 w-4" />
                             <span className="sr-only">Instagram</span>
                           </a>
                         </Button>
                       )}
                       {member.youtube && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          asChild
-                        >
-                          <a
-                            href={member.youtube}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
+                        <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                          <a href={member.youtube} target="_blank" rel="noopener noreferrer">
                             <Youtube className="h-4 w-4" />
                             <span className="sr-only">YouTube</span>
                           </a>
@@ -337,12 +282,8 @@ export default function AboutPage() {
                 <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
                   {tech.icon}
                 </div>
-                <h3 className="text-lg font-bold mb-2 text-primary">
-                  {tech.name}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {tech.description}
-                </p>
+                <h3 className="text-lg font-bold mb-2 text-primary">{tech.name}</h3>
+                <p className="text-muted-foreground text-sm">{tech.description}</p>
               </CardContent>
             </Card>
           ))}

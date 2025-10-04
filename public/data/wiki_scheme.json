@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://prismlinux.org/schemas/wiki.json",
+  "title": "Wiki Categories Schema",
+  "description": "Schema for PrismLinux wiki categories and articles",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "icon", "description", "articles"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The display name of the category",
+        "minLength": 1,
+        "examples": ["Installation", "Configuration", "Package Management"]
+      },
+      "icon": {
+        "type": "string",
+        "description": "The Lucide icon name to display for this category",
+        "enum": [
+          "Download",
+          "Settings",
+          "Book",
+          "AlertTriangle",
+          "Zap",
+          "Users"
+        ],
+        "examples": ["Download", "Settings"]
+      },
+      "description": {
+        "type": "string",
+        "description": "A brief description of what this category contains",
+        "minLength": 1,
+        "examples": ["Complete installation guides and setup instructions"]
+      },
+      "articles": {
+        "type": "array",
+        "description": "List of articles in this category",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["title", "slug", "badge"],
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The display title of the article",
+              "minLength": 1,
+              "examples": ["Get Started", "Virtual Machine Installation"]
+            },
+            "slug": {
+              "type": "string",
+              "description": "The URL slug for the article (relative path without /wiki/ prefix)",
+              "pattern": "^[a-z0-9-]+/[a-z0-9-]+$",
+              "examples": [
+                "installation/get-started",
+                "package-management/prism-package-manager"
+              ]
+            },
+            "badge": {
+              "type": "string",
+              "description": "Badge label to display on the article",
+              "enum": ["Popular", "Essential", "Guide", "Advanced", "Common"],
+              "examples": ["Popular", "Essential", "Guide"]
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  }
+}

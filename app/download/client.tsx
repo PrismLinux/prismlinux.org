@@ -21,11 +21,8 @@ import {
   Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  FALLBACK_RELEASES,
-  type Release,
-  getLatestReleases,
-} from "../../lib/sourseforge";
+
+import { FALLBACK_RELEASES, type Release } from "@/app/api/releases/route";
 
 // --- Constants & Static Data ---
 const SYSTEM_REQUIREMENTS = [
@@ -70,7 +67,6 @@ const INSTALLATION_STEPS = [
 
 function DownloadCard({ release }: { release: Release }) {
   const isStable = release.type === "stable";
-  const accentColor = isStable ? "green" : "blue";
 
   return (
     <Card
@@ -249,23 +245,44 @@ function ReleaseTabs({ stable, beta }: { stable: Release[]; beta: Release[] }) {
 export default function DownloadPageClient() {
   const [releases, setReleases] = useState<Release[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
+  // Fetch releases from API route
+  const fetchReleases = async () => {
+    try {
+      const response = await fetch("/api/releases", {
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data: Release[] = await response.json();
+      console.log("✅ Client received releases:", data.length);
+      setReleases(data);
+    } catch (error) {
+      console.error("❌ Client failed to fetch releases:", error);
+      setReleases(FALLBACK_RELEASES);
+    }
+  };
+
+  // Initial load
   useEffect(() => {
     const load = async () => {
-      try {
-        // Directly call the getLatestReleases function
-        const data = await getLatestReleases();
-        setReleases(data);
-      } catch (error) {
-        console.warn("Failed to fetch releases, using fallback", error);
-        setReleases(FALLBACK_RELEASES);
-      } finally {
-        setLoading(false);
-      }
+      await fetchReleases();
+      setLoading(false);
     };
 
     load();
   }, []);
+
+  // Manual refresh handler
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchReleases();
+    setRefreshing(false);
+  };
 
   const latestStable = releases.find((r) => r.type === "stable");
   const latestBeta = releases.find((r) => r.type === "beta");
@@ -273,7 +290,7 @@ export default function DownloadPageClient() {
   const stableForTabs = latestStable ? [latestStable] : [];
   const betaForTabs = latestBeta ? [latestBeta] : [];
 
-  // While loading - show fallback
+  // Loading state
   if (loading) {
     return (
       <div className="container py-20">
@@ -294,7 +311,7 @@ export default function DownloadPageClient() {
 
   return (
     <div className="container py-20">
-      <header className="text-center space-y-4 mb-16">
+      <header className="text-center space-y-4 mb-12">
         <h1 className="text-4xl md:text-6xl font-bold">
           Download <span className="text-primary">PrismLinux</span>
         </h1>

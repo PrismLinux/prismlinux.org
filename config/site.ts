@@ -14,13 +14,17 @@ export const siteConfig = {
       href: "/download",
     },
     {
+      title: "Wiki",
+      href: "/wiki",
+    },
+    {
+      title: "Terms",
+      href: "/terms",
+    },
+    {
       title: "About",
       href: "/about",
     },
-    // {
-    //   title: "Wiki",
-    //   href: "/wiki",
-    // },
   ],
 };
 

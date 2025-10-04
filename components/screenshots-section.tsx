@@ -57,12 +57,11 @@ export function ScreenshotsSection() {
       <div className="container max-w-6xl mx-auto px-4">
         <div className="text-center space-y-4 mb-12 md:mb-16">
           <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-            Beautiful{" "}
-            <span className="text-foreground">Desktop Environment</span>
+            Beautiful <span className="text-foreground">Desktop Environment</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Experience a modern, customizable desktop that adapts to your
-            workflow with pixel-perfect screenshots
+            Experience a modern, customizable desktop that adapts to your workflow with
+            pixel-perfect screenshots
           </p>
         </div>
 
@@ -79,10 +78,7 @@ export function ScreenshotsSection() {
                 index === screenshots.length - 1);
 
             return (
-              <div
-                key={index}
-                className={spanFullWidth ? "md:col-span-2" : "col-span-1"}
-              >
+              <div key={index} className={spanFullWidth ? "md:col-span-2" : "col-span-1"}>
                 <ScreenshotCard
                   {...screenshot}
                   priority={index === 0}

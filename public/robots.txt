@@ -1,0 +1,19 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow image directories
+Disallow: /wiki/*/
+Disallow: /*.png$
+Disallow: /*.jpg$
+Disallow: /*.jpeg$
+Disallow: /*.gif$
+Disallow: /*.webp$
+Disallow: /*.svg$
+
+# Allow HTML pages in wiki
+Allow: /wiki/*.html
+Allow: /wiki/
+
+# Sitemap
+Sitemap: https://prismlinux.org/sitemap.xml

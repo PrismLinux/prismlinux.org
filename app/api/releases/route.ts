@@ -1,15 +1,10 @@
 import { XMLParser } from "fast-xml-parser";
 import { NextResponse } from "next/server";
 
-// --- Configuration Constants ---
-
 const SOURCEFORGE_RSS_URL =
   "https://sourceforge.net/projects/prismlinux/rss?path=/Beta&limit=50";
 const USER_AGENT = "PrismLinux-Website/1.0";
 
-// --- Type Definitions ---
-
-// Defining the type alias here for use in the Release interface.
 type ReleaseType = "stable" | "beta" | "alpha";
 
 export interface Release {
@@ -22,8 +17,6 @@ export interface Release {
   type: ReleaseType;
   sha256Url?: string;
 }
-
-// --- Fallback Data ---
 
 export const FALLBACK_RELEASES: Release[] = [
   {
@@ -40,13 +33,11 @@ export const FALLBACK_RELEASES: Release[] = [
   },
 ];
 
-// --- Private Helper Functions ---
+// Cache configuration
+export const dynamic = "force-dynamic";
+export const revalidate = 300; // 5 minutes cache
 
-/**
- * Formats a size in bytes into a human-readable string (KB, MB, GB).
- * Uses binary (1024) calculation with proper rounding for PrismLinux ISOs.
- */
-const _formatBytes = (bytes: string | number): string => {
+const formatBytes = (bytes: string | number): string => {
   const numBytes = typeof bytes === "string" ? parseInt(bytes, 10) : bytes;
   if (isNaN(numBytes) || numBytes === 0) return "Unknown";
 
@@ -55,35 +46,22 @@ const _formatBytes = (bytes: string | number): string => {
   const i = Math.floor(Math.log(numBytes) / Math.log(k));
 
   if (i >= 3) {
-    // GB or TB
     const calculated = numBytes / Math.pow(k, i);
-
-    // More specific handling for different PrismLinux versions
-    if (calculated >= 2.6 && calculated < 2.8) {
-      return "2.7 GB"; // For versions like 2025.08.17
-    } else if (calculated >= 2.4 && calculated < 2.6) {
-      return "2.6 GB"; // For versions like 2025.08.29
-    }
-
-    // For other sizes, use standard rounding
-    const rounded = Math.round(calculated * 10) / 10; // Round to 1 decimal
+    if (calculated >= 2.6 && calculated < 2.8) return "2.7 GB";
+    if (calculated >= 2.4 && calculated < 2.6) return "2.6 GB";
+    const rounded = Math.round(calculated * 10) / 10;
     return `${rounded} ${sizes[i]}`;
   }
 
-  // For smaller units, use standard calculation
   const precision = i >= 2 ? 1 : 0;
   const calculated = numBytes / Math.pow(k, i);
   const rounded = parseFloat(calculated.toFixed(precision));
-
   return `${rounded} ${sizes[i]}`;
 };
 
-/**
- * Parses a raw RSS item from the XML feed into a structured object.
- */
-const _parseRssItem = (
+const parseRssItem = (
   item: any,
-): Partial<Release> | { checksumUrl: string; baseName: string } | null => {
+): { checksumUrl: string; baseName: string } | Partial<Release> | null => {
   const title: string = item.title || "";
   const link: string = item.link || "";
 
@@ -99,8 +77,6 @@ const _parseRssItem = (
 
     const version = versionMatch[0];
     const pubDate = item.pubDate || new Date().toISOString();
-
-    // Parse the release date properly
     const releaseDate = new Date(pubDate).toLocaleDateString();
 
     const editionMatch = title.toLowerCase().match(/(desktop|minimal|server)/);
@@ -108,7 +84,6 @@ const _parseRssItem = (
       ? editionMatch[1].charAt(0).toUpperCase() + editionMatch[1].slice(1)
       : "Desktop";
 
-    // Try multiple possible file size attributes
     const fileSizeInBytes =
       item.content?.["@_filesize"] ||
       item["@_filesize"] ||
@@ -118,16 +93,11 @@ const _parseRssItem = (
 
     let size = "Unknown";
     if (fileSizeInBytes) {
-      size = _formatBytes(fileSizeInBytes);
+      size = formatBytes(fileSizeInBytes);
     } else {
-      // Fallback to estimated sizes for different editions
-      if (edition.toLowerCase() === "desktop") {
-        size = "2.6 GB";
-      } else if (edition.toLowerCase() === "minimal") {
-        size = "1.2 GB";
-      } else if (edition.toLowerCase() === "server") {
-        size = "1.8 GB";
-      }
+      if (edition.toLowerCase() === "desktop") size = "2.6 GB";
+      else if (edition.toLowerCase() === "minimal") size = "1.2 GB";
+      else if (edition.toLowerCase() === "server") size = "1.8 GB";
     }
 
     const type = title.toLowerCase().includes("beta")
@@ -150,20 +120,32 @@ const _parseRssItem = (
   return null;
 };
 
-/**
- * Fetches and parses the release data from the SourceForge RSS feed.
- */
-const _fetchFromSourceForge = async (): Promise<Release[]> => {
+async function fetchFromSourceForge(): Promise<Release[]> {
+  console.log("🌐 [Fetch] Fetching from SourceForge RSS...");
+
   const response = await fetch(SOURCEFORGE_RSS_URL, {
-    headers: { "User-Agent": USER_AGENT },
-    cache: "no-cache",
+    headers: {
+      "User-Agent": USER_AGENT,
+      Accept: "application/rss+xml, application/xml, text/xml, */*",
+    },
+    cache: "no-store", // Force fresh fetch
+    next: { revalidate: 0 }, // Disable Next.js cache
   });
+
+  console.log("📡 [Fetch] Response status:", response.status);
+  console.log(
+    "📋 [Fetch] Response headers:",
+    Object.fromEntries(response.headers.entries()),
+  );
 
   if (!response.ok) {
     throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
   }
 
   const xmlText = await response.text();
+  console.log("📄 [Fetch] XML length:", xmlText.length);
+  console.log("🔍 [Fetch] XML preview:", xmlText.substring(0, 500));
+
   const parser = new XMLParser({
     ignoreAttributes: false,
     attributeNamePrefix: "@_",
@@ -171,79 +153,84 @@ const _fetchFromSourceForge = async (): Promise<Release[]> => {
   });
 
   const xmlDoc = parser.parse(xmlText);
+  console.log(
+    "🗂️ [Parse] Parsed XML structure:",
+    JSON.stringify(xmlDoc, null, 2).substring(0, 1000),
+  );
+
   const items = xmlDoc?.rss?.channel?.item ?? [];
   const rawItems = Array.isArray(items) ? items : [items];
+  console.log("📦 [Parse] Found items:", rawItems.length);
 
   const isoReleases = new Map<string, Release>();
   const checksums = new Map<string, string>();
 
   for (const item of rawItems) {
-    const parsed = _parseRssItem(item);
-    if (!parsed) continue;
+    console.log("🔍 [Parse] Processing item:", item.title);
+    const parsed = parseRssItem(item);
+
+    if (!parsed) {
+      console.log("⏭️ [Parse] Skipped item (no match)");
+      continue;
+    }
 
     if ("checksumUrl" in parsed) {
+      console.log("🔐 [Parse] Found checksum:", parsed.baseName);
       checksums.set(parsed.baseName, parsed.checksumUrl);
     } else if ("name" in parsed) {
       const baseName = item.title.split("(")[0].trim();
+      console.log("💿 [Parse] Found ISO:", baseName);
       isoReleases.set(baseName, parsed as Release);
     }
   }
 
+  console.log("📊 [Parse] Total ISOs:", isoReleases.size);
+  console.log("📊 [Parse] Total checksums:", checksums.size);
+
   const combinedReleases: Release[] = [];
   for (const [baseName, release] of isoReleases.entries()) {
-    if (checksums.has(baseName)) {
-      release.sha256Url = checksums.get(baseName);
+    const checksum = checksums.get(baseName);
+    if (checksum) {
+      release.sha256Url = checksum;
     }
     combinedReleases.push(release);
   }
 
-  return combinedReleases;
-};
-
-// --- Public API ---
-
-export const getLatestReleases = async (): Promise<Release[]> => {
-  try {
-    const releases = await _fetchFromSourceForge();
-
-    if (releases.length === 0) {
-      console.warn(
-        "SourceForge fetch returned no releases. Using fallback data.",
-      );
-      return FALLBACK_RELEASES;
+  const sorted = combinedReleases.sort((a, b) => {
+    const dateA = new Date(a.releaseDate);
+    const dateB = new Date(b.releaseDate);
+    if (dateA.getTime() !== dateB.getTime()) {
+      return dateB.getTime() - dateA.getTime();
     }
+    return b.version.localeCompare(a.version, undefined, { numeric: true });
+  });
 
-    return releases.sort((a, b) => {
-      // First sort by date (newest first), then by version
-      const dateA = new Date(a.releaseDate);
-      const dateB = new Date(b.releaseDate);
-
-      // If dates are different, sort by date
-      if (dateA.getTime() !== dateB.getTime()) {
-        return dateB.getTime() - dateA.getTime(); // Newest first
-      }
-
-      // If dates are same, sort by version
-      return b.version.localeCompare(a.version, undefined, { numeric: true });
-    });
-  } catch (error) {
-    console.error(
-      "Failed to fetch/parse SourceForge releases. Using fallback data.",
-      error,
-    );
-    return FALLBACK_RELEASES;
-  }
-};
+  console.log("✅ [Parse] Final releases:", sorted.length);
+  return sorted;
+}
 
 export async function GET() {
+  console.log("🔍 [API] Starting fetch from SourceForge...");
+  console.log("🔗 [API] URL:", SOURCEFORGE_RSS_URL);
+
   try {
-    const releases = await getLatestReleases();
+    const releases = await fetchFromSourceForge();
+
+    console.log("✅ [API] Fetched releases:", releases.length);
+    console.log("📦 [API] Releases:", JSON.stringify(releases, null, 2));
+
+    if (releases.length === 0) {
+      console.warn("⚠️ [API] No releases found, using fallback");
+      return NextResponse.json(FALLBACK_RELEASES);
+    }
+
     return NextResponse.json(releases);
   } catch (error) {
-    console.error("Error fetching releases:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch releases" },
-      { status: 500 },
+    console.error("❌ [API] Failed to fetch releases:", error);
+    console.error(
+      "🔍 [API] Error details:",
+      error instanceof Error ? error.message : error,
     );
+    return NextResponse.json(FALLBACK_RELEASES);
   }
 }

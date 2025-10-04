@@ -1,0 +1,20 @@
+[
+  {
+    "$schema": "./wiki-schema.json",
+    "name": "Installation",
+    "icon": "Download",
+    "description": "Complete installation guides and setup instructions",
+    "articles": [
+      {
+        "title": "Virtual Machine Installation",
+        "slug": "installation/vm-installation",
+        "badge": "Guide"
+      },
+      {
+        "title": "UEFI vs BIOS",
+        "slug": "installation/uefi-vs-bios",
+        "badge": "Guide"
+      }
+    ]
+  }
+]

@@ -38,8 +38,6 @@ export const baseMetadata: Metadata = {
   // Icons
   icons: {
     icon: [{ url: "/logo.svg", type: "image/svg+xml" }],
-    shortcut: "/favicon.ico",
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
 
   // OpenGraph
@@ -52,9 +50,9 @@ export const baseMetadata: Metadata = {
     description: SITE_CONFIG.description,
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "logo.svg",
+        width: 512,
+        height: 512,
         alt: `${SITE_CONFIG.name} - ${SITE_CONFIG.description}`,
       },
     ],
@@ -72,11 +70,6 @@ export const baseMetadata: Metadata = {
       "max-snippet": -1,
     },
   },
-
-  // Verification
-  // verification: {
-  //   google: "your-google-verification-code",
-  // },
 };
 
 // Function to create metadata for specific pages
@@ -85,7 +78,7 @@ export function createPageMetadata({
   description,
   path = "",
   keywords = [],
-  images = ["/og-image.png"],
+  images = ["/logo.svg"],
   noIndex = false,
 }: {
   title: string;

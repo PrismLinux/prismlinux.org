@@ -11,7 +11,7 @@ import { useState } from "react";
 
 const navItems = [
   { name: "Download", href: "/download" },
-  // { name: "Wiki", href: "/wiki" },
+  { name: "Wiki", href: "/wiki" },
   { name: "About", href: "/about" },
 ];
 

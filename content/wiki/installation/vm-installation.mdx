@@ -1,0 +1,70 @@
+---
+title: VM Installation
+description: Complete step-by-step guide to installing PrismLinux on your system
+lastModified: 2025-10-05
+author: PrismLinux Team
+category: Installation
+---
+
+## Installing PrismLinux in a Virtual Machine
+
+This guide will walk you through installing PrismLinux using GNOME Boxes as a virtual machine manager.
+
+### Prerequisites
+
+- GNOME Boxes installed on your system
+- PrismLinux ISO file downloaded from [prismlinux.org/download](/download/)
+- At least 4GB of RAM and 30GB of free disk space
+
+### Step 1: Creating a New Virtual Machine
+
+1. Open **GNOME Boxes** from your applications menu
+2. Click the **+** (plus) button in the top-left corner
+3. Select **Operating System Image File**
+
+![GNOME Boxes welcome screen](/api/content-image/wiki/vm-installation/welcome-screen.png)
+
+### Step 2: Selecting the ISO
+
+1. Click **Select a File** and browse to your downloaded PrismLinux ISO
+2. GNOME Boxes will automatically detect the operating system
+3. Click **Next** to continue
+
+![Selecting ISO file](/api/content-image/wiki/vm-installation/select-disk.png)
+
+### Step 3: Configuring Resources
+
+1. Adjust the allocated **Memory** (recommended: 4GB minimum)
+2. Set **Disk Space** (recommended: 30GB minimum)
+3. Choose Operating System **ArchLinux** with **UEFI(recommended)**
+4. Click **Create** to start the virtual machine
+
+![Resource configuration](/api/content-image/wiki/vm-installation/resources.png)
+
+### Step 4: Installation Process
+
+1. The VM will boot from the ISO automatically
+2. Follow the PrismLinux installer prompts on screen
+3. Select your language, timezone, and keyboard layout
+4. Create your user account and set a password
+5. Wait for the installation to complete
+
+![PrismLinux installer](/api/content-image/wiki/vm-installation/installation.png)
+
+### Step 5: First Boot
+
+1. Once installation is complete, the VM will restart
+2. Remove the installation media when prompted (GNOME Boxes does this automatically)
+3. Log in with your credentials
+
+Congratulations! You now have PrismLinux running in a virtual machine.
+
+---
+
+## TODO: Virt-Manager Installation Guide
+
+Instructions for installing PrismLinux using Virt-Manager will be added soon.
+
+---
+
+For more information, visit the [PrismLinux Wiki](/wiki/).
