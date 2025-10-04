@@ -52,7 +52,7 @@ const technologies = [
   {
     name: "Linux Kernel",
     icon: "🐧",
-    description: "Latest stable kernel Cachy, TKG or Linux-Zen/Linux",
+    description: "Latest stable kernel Cachy, Linux-Zen/Linux",
   },
   {
     name: "GRUB",
