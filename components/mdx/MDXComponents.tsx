@@ -25,19 +25,11 @@ type WithChildren = { children: ReactNode };
 type TableCellProps = { children: ReactNode; header?: boolean };
 
 // Warning callout
-export function Warning({
-  children,
-  title = "Warning",
-}: {
-  children: ReactNode;
-  title?: string;
-}) {
+export function Warning({ children, title = "Warning" }: { children: ReactNode; title?: string }) {
   return (
     <Alert className="border-yellow-500/50 bg-yellow-500/10 my-6">
       <AlertTriangle className="h-4 w-4 text-yellow-500" />
-      <AlertTitle className="text-yellow-700 dark:text-yellow-400">
-        {title}
-      </AlertTitle>
+      <AlertTitle className="text-yellow-700 dark:text-yellow-400">{title}</AlertTitle>
       <AlertDescription className="text-yellow-600 dark:text-yellow-300">
         {children}
       </AlertDescription>
@@ -46,76 +38,40 @@ export function Warning({
 }
 
 // Info callout
-export function Info({
-  children,
-  title = "Info",
-}: {
-  children: ReactNode;
-  title?: string;
-}) {
+export function Info({ children, title = "Info" }: { children: ReactNode; title?: string }) {
   return (
     <Alert className="border-blue-500/50 bg-blue-500/10 my-6">
       <InfoIcon className="h-4 w-4 text-blue-500" />
-      <AlertTitle className="text-blue-700 dark:text-blue-400">
-        {title}
-      </AlertTitle>
-      <AlertDescription className="text-blue-600 dark:text-blue-300">
-        {children}
-      </AlertDescription>
+      <AlertTitle className="text-blue-700 dark:text-blue-400">{title}</AlertTitle>
+      <AlertDescription className="text-blue-600 dark:text-blue-300">{children}</AlertDescription>
     </Alert>
   );
 }
 
 // Success callout
-export function Success({
-  children,
-  title = "Success",
-}: {
-  children: ReactNode;
-  title?: string;
-}) {
+export function Success({ children, title = "Success" }: { children: ReactNode; title?: string }) {
   return (
     <Alert className="border-green-500/50 bg-green-500/10 my-6">
       <CheckCircle className="h-4 w-4 text-green-500" />
-      <AlertTitle className="text-green-700 dark:text-green-400">
-        {title}
-      </AlertTitle>
-      <AlertDescription className="text-green-600 dark:text-green-300">
-        {children}
-      </AlertDescription>
+      <AlertTitle className="text-green-700 dark:text-green-400">{title}</AlertTitle>
+      <AlertDescription className="text-green-600 dark:text-green-300">{children}</AlertDescription>
     </Alert>
   );
 }
 
 // Error callout
-export function Error({
-  children,
-  title = "Error",
-}: {
-  children: ReactNode;
-  title?: string;
-}) {
+export function Error({ children, title = "Error" }: { children: ReactNode; title?: string }) {
   return (
     <Alert className="border-red-500/50 bg-red-500/10 my-6">
       <XCircle className="h-4 w-4 text-red-500" />
-      <AlertTitle className="text-red-700 dark:text-red-400">
-        {title}
-      </AlertTitle>
-      <AlertDescription className="text-red-600 dark:text-red-300">
-        {children}
-      </AlertDescription>
+      <AlertTitle className="text-red-700 dark:text-red-400">{title}</AlertTitle>
+      <AlertDescription className="text-red-600 dark:text-red-300">{children}</AlertDescription>
     </Alert>
   );
 }
 
 // Code block with copy functionality
-export function CodeBlock({
-  children,
-  ...props
-}: {
-  children: ReactNode;
-  [key: string]: any;
-}) {
+export function CodeBlock({ children, ...props }: { children: ReactNode; [key: string]: any }) {
   const [copied, setCopied] = useState(false);
 
   // Extract language from className (e.g., ‘language-js’)
@@ -132,10 +88,7 @@ export function CodeBlock({
   return (
     <div className="relative my-6 rounded-lg border bg-slate-950 text-slate-50 font-mono text-sm">
       <div className="flex items-center justify-between px-4 py-2 border-b">
-        <Badge
-          variant="outline"
-          className="text-xs text-slate-400 border-slate-700"
-        >
+        <Badge variant="outline" className="text-xs text-slate-400 border-slate-700">
           {language}
         </Badge>
         <Button
@@ -144,11 +97,7 @@ export function CodeBlock({
           onClick={copyToClipboard}
           className="h-8 w-8 text-slate-400 hover:bg-slate-800 hover:text-slate-50"
         >
-          {copied ? (
-            <Check className="h-4 w-4" />
-          ) : (
-            <Copy className="h-4 w-4" />
-          )}
+          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         </Button>
       </div>
       <pre className="p-4 overflow-x-auto">
@@ -181,13 +130,7 @@ export function DownloadButton({
 }
 
 // External link with icon
-export function ExternalLinkButton({
-  href,
-  children,
-}: {
-  href: string;
-  children: ReactNode;
-}) {
+export function ExternalLinkButton({ href, children }: { href: string; children: ReactNode }) {
   return (
     <Button asChild variant="outline" className="my-2">
       <Link href={href} target="_blank" rel="noopener noreferrer">
@@ -214,20 +157,14 @@ export function TableHeader({ children }: WithChildren) {
 
 // Enhanced table row
 export function TableRow({ children }: WithChildren) {
-  return (
-    <tr className="border-b border-border hover:bg-muted/30 transition-colors">
-      {children}
-    </tr>
-  );
+  return <tr className="border-b border-border hover:bg-muted/30 transition-colors">{children}</tr>;
 }
 
 // Enhanced table cell
 export function TableCell({ children, header = false }: TableCellProps) {
   const Tag = header ? "th" : "td";
   return (
-    <Tag
-      className={`p-3 text-left ${header ? "font-semibold" : "text-muted-foreground"}`}
-    >
+    <Tag className={`p-3 text-left ${header ? "font-semibold" : "text-muted-foreground"}`}>
       {children}
     </Tag>
   );
@@ -289,9 +226,7 @@ export function Tab({
 // Feature grid
 export function FeatureGrid({ children }: WithChildren) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
-      {children}
-    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">{children}</div>
   );
 }
 

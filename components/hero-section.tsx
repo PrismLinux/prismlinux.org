@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -10,9 +10,8 @@ export function HeroSection() {
           A modern, high-performance Arch-based distribution.
         </h1>
         <p className="max-w-2xl leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-          Experience the future of Linux, optimized for gaming, programming, and
-          content creation. Built for speed, security, and a great user
-          experience.
+          Experience the future of Linux, optimized for gaming, programming, and content creation.
+          Built for speed, security, and a great user experience.
         </p>
         <div className="flex gap-4">
           <Link href="/download" className={cn(buttonVariants({ size: "lg" }))}>

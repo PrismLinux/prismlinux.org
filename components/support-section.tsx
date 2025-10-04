@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Coffee, DollarSign, Heart } from "lucide-react";
 import Link from "next/link";
 
@@ -27,9 +21,8 @@ export function SupportSection() {
             Support <span className="text-primary">Development</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Help us continue developing and improving PrismLinux for the
-            community. Your support enables us to dedicate more time to new
-            features, bug fixes, and community support.
+            Help us continue developing and improving PrismLinux for the community. Your support
+            enables us to dedicate more time to new features, bug fixes, and community support.
           </p>
         </div>
 
@@ -41,25 +34,18 @@ export function SupportSection() {
               <div className="mx-auto w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <Heart className="h-8 w-8 text-white" />
               </div>
-              <CardTitle className="text-xl font-bold">
-                PayPal Donation
-              </CardTitle>
+              <CardTitle className="text-xl font-bold">PayPal Donation</CardTitle>
               <CardDescription className="text-muted-foreground text-center">
                 Support us with a secure one-time donation via PayPal
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-4 relative z-10 pb-6">
-              <div className="text-sm text-muted-foreground">
-                Quick & secure payment
-              </div>
+              <div className="text-sm text-muted-foreground">Quick & secure payment</div>
               <Button
                 className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg hover:shadow-xl transition-all duration-300"
                 asChild
               >
-                <Link
-                  href="https://paypal.me/"
-                  className="flex items-center gap-2 justify-center"
-                >
+                <Link href="https://paypal.me/" className="flex items-center gap-2 justify-center">
                   <DollarSign className="h-4 w-4" />
                   Donate Now
                 </Link>
@@ -74,17 +60,13 @@ export function SupportSection() {
               <div className="mx-auto w-16 h-16 bg-gradient-to-br from-accent to-accent/80 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                 <Coffee className="h-8 w-8 text-white" />
               </div>
-              <CardTitle className="text-xl font-bold">
-                Buy Me a Coffee
-              </CardTitle>
+              <CardTitle className="text-xl font-bold">Buy Me a Coffee</CardTitle>
               <CardDescription className="text-muted-foreground text-center">
                 Support with a coffee to fuel late-night development
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center space-y-4 relative z-10 pb-6">
-              <div className="text-sm text-muted-foreground">
-                Casual support
-              </div>
+              <div className="text-sm text-muted-foreground">Casual support</div>
               <Button
                 variant="secondary"
                 className="w-full bg-gradient-to-r from-accent/10 to-accent/20 hover:from-accent/20 hover:to-accent/30 border border-accent/20 hover:border-accent/40 transition-all duration-300"
@@ -109,10 +91,9 @@ export function SupportSection() {
               <strong>Why support us?</strong>
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Your contributions help cover development costs, server expenses,
-              and allow us to dedicate more time to improving PrismLinux. Every
-              donation, no matter the size, makes a real difference in our
-              ability to deliver quality software to the community.
+              Your contributions help cover development costs, server expenses, and allow us to
+              dedicate more time to improving PrismLinux. Every donation, no matter the size, makes
+              a real difference in our ability to deliver quality software to the community.
             </p>
           </div>
         </div>

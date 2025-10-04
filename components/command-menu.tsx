@@ -61,10 +61,7 @@ export function CommandMenu({ ...props }: DialogProps) {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Links">
-            <CommandItem
-              value="home"
-              onSelect={() => runCommand(() => router.push("/"))}
-            >
+            <CommandItem value="home" onSelect={() => runCommand(() => router.push("/"))}>
               <File className="mr-2 h-4 w-4" />
               Home
             </CommandItem>
@@ -75,17 +72,11 @@ export function CommandMenu({ ...props }: DialogProps) {
               <File className="mr-2 h-4 w-4" />
               Download
             </CommandItem>
-            <CommandItem
-              value="about"
-              onSelect={() => runCommand(() => router.push("/about"))}
-            >
+            <CommandItem value="about" onSelect={() => runCommand(() => router.push("/about"))}>
               <File className="mr-2 h-4 w-4" />
               About
             </CommandItem>
-            <CommandItem
-              value="wiki"
-              onSelect={() => runCommand(() => router.push("/wiki"))}
-            >
+            <CommandItem value="wiki" onSelect={() => runCommand(() => router.push("/wiki"))}>
               <File className="mr-2 h-4 w-4" />
               Wiki
             </CommandItem>

@@ -45,9 +45,7 @@ export default function SiteFooter() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Sparkles className="h-4 w-4 text-primary-foreground" />
               </div>
-              <h3 className="text-xl font-bold text-foreground">
-                {COMPANY.name}
-              </h3>
+              <h3 className="text-xl font-bold text-foreground">{COMPANY.name}</h3>
             </div>
             <p className="text-muted-foreground text-sm text-center sm:text-left max-w-xs">
               High-performance Arch Linux for creators

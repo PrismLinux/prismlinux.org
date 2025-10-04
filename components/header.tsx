@@ -30,12 +30,7 @@ export function Header({ children }: HeaderProps) {
           <div className="flex items-center gap-6">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="/logo.svg"
-                alt="PrismLinux Logo"
-                width={28}
-                height={28}
-              />
+              <Image src="/logo.svg" alt="PrismLinux Logo" width={28} height={28} />
               <span className="font-bold text-primary">PrismLinux</span>
             </Link>
 
