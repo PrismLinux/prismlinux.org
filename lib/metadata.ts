@@ -50,9 +50,9 @@ export const baseMetadata: Metadata = {
     description: SITE_CONFIG.description,
     images: [
       {
-        url: "logo.svg",
-        width: 512,
-        height: 512,
+        url: "/logo.png",
+        width: 1024,
+        height: 1024,
         alt: `${SITE_CONFIG.name} - ${SITE_CONFIG.description}`,
       },
     ],
@@ -127,12 +127,7 @@ export const pageMetadata = {
     title: "High-Performance Arch-Based Distribution",
     description:
       "Experience the future of Linux with PrismLinux - optimized for gamers, developers, and creators.",
-    keywords: [
-      "Linux distribution",
-      "Arch Linux",
-      "Gaming Linux",
-      "Developer tools",
-    ],
+    keywords: ["Linux distribution", "Arch Linux", "Gaming Linux", "Developer tools"],
   }),
 
   about: createPageMetadata({
@@ -156,13 +151,7 @@ export const pageMetadata = {
     description:
       "Complete documentation for PrismLinux. Installation guides, configuration tips, and troubleshooting.",
     path: "/wiki",
-    keywords: [
-      "documentation",
-      "wiki",
-      "guides",
-      "tutorials",
-      "troubleshooting",
-    ],
+    keywords: ["documentation", "wiki", "guides", "tutorials", "troubleshooting"],
   }),
 
   support: createPageMetadata({
