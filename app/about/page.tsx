@@ -19,15 +19,6 @@ const teamMembers = [
     instagram: "https://instagram.com/volodiakraplich",
   },
   {
-    name: "Rain Xelelo",
-    role: "Developer",
-    description:
-      "Software Developer and Discord maintainer at PrismLinux. Experienced developer with contributions since 2024, focused on creating efficient software solutions.",
-    avatar: "team/rain-xelelo.png",
-    github: "https://github.com/rxelelo",
-    gitlab: "https://gitlab.com/rxelelo",
-  },
-  {
     name: "Vladimir Banov",
     role: "Translator",
     description:
