@@ -12,8 +12,7 @@ const teamMembers = [
     name: "Volodia Kraplich",
     role: "Lead Developer",
     description:
-      "System architect and Software Engineer with 2+ years in Linux development. Founder of CrystalNetwork Studio, passionate developer focused on creating better systems and continuously improving skills.",
-    // avatar: "/team/volodia.jpg",
+      "Software/System Engineer with 2+ years crafting high-performance Linux solutions. Founder of CrystalNetwork Studio, dedicated to building robust systems and pushing technical boundaries.",
     github: "https://github.com/VolodiaKraplich",
     gitlab: "https://gitlab.com/VolodiaKraplich",
     instagram: "https://instagram.com/volodiakraplich",
@@ -61,9 +60,9 @@ const technologies = [
     description: "Advanced bootloader",
   },
   {
-    name: "Rust + Golang + C",
+    name: "Rust & Go",
     icon: "⚡",
-    description: "Core system tools written in Rust, Go and C",
+    description: "Performance-critical tools built with modern languages",
   },
 ];
 
