@@ -94,7 +94,7 @@ export function ImageZoom() {
       document.addEventListener("keydown", escapeHandler);
     }
 
-    function setupInteractions(modal: HTMLElement) {
+    function setupInteractions(_modal: HTMLElement) {
       if (!zoomedImage) return;
 
       // Mouse drag
