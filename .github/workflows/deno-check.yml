@@ -1,0 +1,32 @@
+name: Deno Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deno-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+
+    - name: Cache Dependencies
+      run: deno cache --lock=deno.lock deps.ts
+
+    - name: Lint Code
+      run: deno lint
+
+    - name: Format Code
+      run: deno fmt --check
+
+    - name: Run Tests (if any)
+      run: deno test --allow-read
