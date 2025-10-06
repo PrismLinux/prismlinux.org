@@ -3,11 +3,9 @@ import SiteHeader from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { baseMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
-import {
-    JetBrains_Mono as FontMono,
-    Inter as FontSans,
-} from "next/font/google";
+import { Inter as FontSans, JetBrains_Mono as FontMono } from "next/font/google";
 import type React from "react";
+import { AnimatedPageWrapper } from "@/components/AnimatedPageWrapper";
 import "./globals.css";
 
 const fontSans = FontSans({
@@ -32,15 +30,15 @@ export default function RootLayout({
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased transition-colors duration-500",
           fontSans.variable,
-          fontMono.variable,
+          fontMono.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="relative flex min-h-screen flex-col">
             <SiteHeader>
-              <main className="flex-1">{children}</main>
+              <AnimatedPageWrapper>{children}</AnimatedPageWrapper>
             </SiteHeader>
             <SiteFooter />
           </div>
