@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Gamepad2, Package, Palette, Shield, Zap } from "lucide-react";
-import ScrollFloat from "@/components/ui/scroll-float";
 
 const features = [
   {
@@ -49,25 +48,13 @@ export function FeaturesSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="group relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary/30"
-            >
-              {/* Glow effect on hover */}
-              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
-              
+            <Card key={index} className="card-glow">
               <CardHeader className="flex flex-row items-center gap-4">
-                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
-                  <feature.icon className="h-8 w-8 text-primary group-hover:scale-110 transition-transform duration-300" />
-                </div>
-                <CardTitle className="group-hover:text-primary transition-colors duration-300">
-                  {feature.title}
-                </CardTitle>
+                <feature.icon className="h-8 w-8 text-primary" />
+                <CardTitle>{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                  {feature.description}
-                </p>
+                <p className="text-muted-foreground">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
