@@ -313,9 +313,8 @@ function TableOfContents({ content }: { content: string }) {
             <a
               key={heading.id}
               href={`#${heading.id}`}
-              className={`block text-sm hover:text-primary transition-colors ${
-                heading.level === 2 ? "ml-0 font-medium" : heading.level === 3 ? "ml-4" : "ml-8"
-              }`}
+              className={`block text-sm hover:text-primary transition-colors ${heading.level === 2 ? "ml-0 font-medium" : heading.level === 3 ? "ml-4" : "ml-8"
+                }`}
             >
               {heading.text}
             </a>
