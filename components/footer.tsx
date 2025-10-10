@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { SITE_CONFIG } from "@/lib/metadata";
-import { Gitlab, Sparkles } from "lucide-react";
+import { Github, Gitlab, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 const LINKS = {
@@ -9,6 +9,11 @@ const LINKS = {
       href: SITE_CONFIG.social.discord,
       icon: DiscordIcon,
       label: "Discord",
+    },
+    {
+      href: SITE_CONFIG.social.github,
+      icon: Github,
+      label: "GitHub",
     },
     {
       href: SITE_CONFIG.social.gitlab + "linux/prismlinux/",

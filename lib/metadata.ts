@@ -18,7 +18,8 @@ export const SITE_CONFIG = {
   ] as string[],
   social: {
     discord: "https://discord.gg/hMrWsTpdqw",
-    gitlab: "https://gitlab.com/crystalnetwork-studio/",
+    github: "https://github.com/PrismLinux",
+    gitlab: "https://gitlab.com/crystalnetwork-studio/"
   },
 };
 
@@ -110,9 +111,9 @@ export function createPageMetadata({
 
     robots: noIndex
       ? {
-          index: false,
-          follow: false,
-        }
+        index: false,
+        follow: false,
+      }
       : undefined,
 
     alternates: {
