@@ -16,6 +16,7 @@ const teamMembers = [
     github: "https://github.com/VolodiaKraplich",
     gitlab: "https://gitlab.com/VolodiaKraplich",
     instagram: "https://instagram.com/volodiakraplich",
+    youtube: "https://www.youtube.com/@VolodiaKraplich"
   },
   {
     name: "Vladimir Banov",
