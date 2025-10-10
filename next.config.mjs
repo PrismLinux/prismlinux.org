@@ -8,6 +8,7 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    qualities: [75, 90]
   },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   experimental: {
